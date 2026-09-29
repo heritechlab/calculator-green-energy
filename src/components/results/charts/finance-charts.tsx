@@ -18,7 +18,17 @@ import {
 import type { CalculationResult, SensitivityItem, SizingPoint } from "@/lib/engine";
 import { formatDecimal, formatKwp, formatRupiah, formatYears } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { CHROME, ChartFrame, SERIES, TooltipCard, axisTick, compactRupiah, niceScale, usePrefersReducedMotion, type LegendItem } from "./chart-kit";
+import {
+  CHROME,
+  ChartFrame,
+  SERIES,
+  TooltipCard,
+  axisTick,
+  compactRupiah,
+  niceScale,
+  usePrefersReducedMotion,
+  type LegendItem,
+} from "./chart-kit";
 
 /** Arus kas kumulatif selama umur sistem (satu sumbu: Rupiah). */
 export function CashflowChart({ result }: { result: CalculationResult }) {
@@ -74,12 +84,46 @@ export function CashflowChart({ result }: { result: CalculationResult }) {
             </linearGradient>
           </defs>
           <CartesianGrid vertical={false} stroke={CHROME.grid} />
-          <XAxis dataKey="year" type="number" domain={[0, ev.years.length]} tickCount={6} allowDecimals={false} tick={axisTick} tickLine={false} axisLine={{ stroke: CHROME.axis }} />
-          <YAxis tick={axisTick} tickLine={false} axisLine={false} width={64} tickFormatter={compactRupiah} domain={scale.domain} ticks={scale.ticks} />
+          <XAxis
+            dataKey="year"
+            type="number"
+            domain={[0, ev.years.length]}
+            tickCount={6}
+            allowDecimals={false}
+            tick={axisTick}
+            tickLine={false}
+            axisLine={{ stroke: CHROME.axis }}
+          />
+          <YAxis
+            tick={axisTick}
+            tickLine={false}
+            axisLine={false}
+            width={64}
+            tickFormatter={compactRupiah}
+            domain={scale.domain}
+            ticks={scale.ticks}
+          />
           <Tooltip content={Content} cursor={{ stroke: CHROME.baseline, strokeWidth: 1 }} />
           <ReferenceLine y={0} stroke={CHROME.baseline} strokeWidth={1.5} />
-          <Area type="monotone" dataKey="cumulative" stroke={SERIES.solar} strokeWidth={2} fill="url(#cf-fill)" isAnimationActive={!reduced} activeDot={{ r: 5, stroke: CHROME.surface, strokeWidth: 2 }} />
-          {loan ? <Line type="monotone" dataKey="withLoan" stroke={SERIES.loan} strokeWidth={2} dot={false} isAnimationActive={!reduced} /> : null}
+          <Area
+            type="monotone"
+            dataKey="cumulative"
+            stroke={SERIES.solar}
+            strokeWidth={2}
+            fill="url(#cf-fill)"
+            isAnimationActive={!reduced}
+            activeDot={{ r: 5, stroke: CHROME.surface, strokeWidth: 2 }}
+          />
+          {loan ? (
+            <Line
+              type="monotone"
+              dataKey="withLoan"
+              stroke={SERIES.loan}
+              strokeWidth={2}
+              dot={false}
+              isAnimationActive={!reduced}
+            />
+          ) : null}
           {payback !== null && payback <= ev.years.length ? (
             <ReferenceDot
               x={payback}
@@ -88,7 +132,14 @@ export function CashflowChart({ result }: { result: CalculationResult }) {
               fill={SERIES.solar}
               stroke={CHROME.surface}
               strokeWidth={2}
-              label={{ value: `Balik modal ${formatDecimal(payback, 1)} thn`, position: "top", fill: "#0f172a", fontSize: 12, fontWeight: 700, offset: 10 }}
+              label={{
+                value: `Balik modal ${formatDecimal(payback, 1)} thn`,
+                position: "top",
+                fill: "#0f172a",
+                fontSize: 12,
+                fontWeight: 700,
+                offset: 10,
+              }}
             />
           ) : null}
         </ComposedChart>
@@ -107,7 +158,10 @@ export function SizingCharts({ curve, selectedKwp }: { curve: SizingPoint[]; sel
   const npvScale = niceScale(Math.min(...data.map((d) => d.npv)), Math.max(...data.map((d) => d.npv)), 4);
   const paybacks = data.map((d) => d.payback).filter((v): v is number => v !== null);
   const pbScale = niceScale(0, paybacks.length ? Math.max(...paybacks) : 1, 4);
-  const selected = data.reduce((best, d) => (Math.abs(d.kwp - selectedKwp) < Math.abs(best.kwp - selectedKwp) ? d : best), data[0]);
+  const selected = data.reduce(
+    (best, d) => (Math.abs(d.kwp - selectedKwp) < Math.abs(best.kwp - selectedKwp) ? d : best),
+    data[0],
+  );
   if (data.length < 2) return null;
 
   const npvContent = ({ active, payload }: TooltipContentProps) => {
@@ -118,7 +172,12 @@ export function SizingCharts({ curve, selectedKwp }: { curve: SizingPoint[]; sel
   const pbContent = ({ active, payload }: TooltipContentProps) => {
     if (!active || !payload?.length) return null;
     const p = payload[0].payload as (typeof data)[number];
-    return <TooltipCard title={formatKwp(p.kwp)} rows={[{ color: SERIES.grid, label: "balik modal", value: formatYears(p.payback) }]} />;
+    return (
+      <TooltipCard
+        title={formatKwp(p.kwp)}
+        rows={[{ color: SERIES.grid, label: "balik modal", value: formatYears(p.payback) }]}
+      />
+    );
   };
   const xAxis = (
     <XAxis
@@ -138,16 +197,36 @@ export function SizingCharts({ curve, selectedKwp }: { curve: SizingPoint[]; sel
       <ChartFrame
         title="Keuntungan bersih (NPV) per kapasitas"
         description="Titik tertinggi = ukuran dengan nilai ekonomi terbaik. Sumbu X dalam kWp."
-        table={{ caption: "NPV per kapasitas", columns: ["kWp", "NPV"], rows: data.map((d) => [formatDecimal(d.kwp, 2), formatRupiah(d.npv)]) }}
+        table={{
+          caption: "NPV per kapasitas",
+          columns: ["kWp", "NPV"],
+          rows: data.map((d) => [formatDecimal(d.kwp, 2), formatRupiah(d.npv)]),
+        }}
       >
         <ResponsiveContainer width="100%" height={220} initialDimension={{ width: 480, height: 220 }}>
           <LineChart data={data} margin={{ top: 12, right: 12, bottom: 0, left: 4 }}>
             <CartesianGrid vertical={false} stroke={CHROME.grid} />
             {xAxis}
-            <YAxis tick={axisTick} tickLine={false} axisLine={false} width={64} tickFormatter={compactRupiah} domain={npvScale.domain} ticks={npvScale.ticks} />
+            <YAxis
+              tick={axisTick}
+              tickLine={false}
+              axisLine={false}
+              width={64}
+              tickFormatter={compactRupiah}
+              domain={npvScale.domain}
+              ticks={npvScale.ticks}
+            />
             <Tooltip content={npvContent} cursor={{ stroke: CHROME.baseline, strokeWidth: 1 }} />
             <ReferenceLine y={0} stroke={CHROME.baseline} />
-            <Line type="monotone" dataKey="npv" stroke={SERIES.solar} strokeWidth={2} dot={false} isAnimationActive={!reduced} activeDot={{ r: 5, stroke: CHROME.surface, strokeWidth: 2 }} />
+            <Line
+              type="monotone"
+              dataKey="npv"
+              stroke={SERIES.solar}
+              strokeWidth={2}
+              dot={false}
+              isAnimationActive={!reduced}
+              activeDot={{ r: 5, stroke: CHROME.surface, strokeWidth: 2 }}
+            />
             <ReferenceDot x={selected.kwp} y={selected.npv} r={6} fill={SERIES.solar} stroke={CHROME.surface} strokeWidth={2} />
           </LineChart>
         </ResponsiveContainer>
@@ -155,17 +234,45 @@ export function SizingCharts({ curve, selectedKwp }: { curve: SizingPoint[]; sel
       <ChartFrame
         title="Lama balik modal per kapasitas"
         description="Semakin rendah semakin cepat. Titik = kapasitas yang dipilih."
-        table={{ caption: "Balik modal per kapasitas", columns: ["kWp", "Balik modal"], rows: data.map((d) => [formatDecimal(d.kwp, 2), formatYears(d.payback)]) }}
+        table={{
+          caption: "Balik modal per kapasitas",
+          columns: ["kWp", "Balik modal"],
+          rows: data.map((d) => [formatDecimal(d.kwp, 2), formatYears(d.payback)]),
+        }}
       >
         <ResponsiveContainer width="100%" height={220} initialDimension={{ width: 480, height: 220 }}>
           <LineChart data={data} margin={{ top: 12, right: 12, bottom: 0, left: 4 }}>
             <CartesianGrid vertical={false} stroke={CHROME.grid} />
             {xAxis}
-            <YAxis tick={axisTick} tickLine={false} axisLine={false} width={40} tickFormatter={(v: number) => `${formatDecimal(v, 1)} th`} domain={pbScale.domain} ticks={pbScale.ticks} />
+            <YAxis
+              tick={axisTick}
+              tickLine={false}
+              axisLine={false}
+              width={40}
+              tickFormatter={(v: number) => `${formatDecimal(v, 1)} th`}
+              domain={pbScale.domain}
+              ticks={pbScale.ticks}
+            />
             <Tooltip content={pbContent} cursor={{ stroke: CHROME.baseline, strokeWidth: 1 }} />
-            <Line type="monotone" dataKey="payback" stroke={SERIES.grid} strokeWidth={2} dot={false} connectNulls={false} isAnimationActive={!reduced} activeDot={{ r: 5, stroke: CHROME.surface, strokeWidth: 2 }} />
+            <Line
+              type="monotone"
+              dataKey="payback"
+              stroke={SERIES.grid}
+              strokeWidth={2}
+              dot={false}
+              connectNulls={false}
+              isAnimationActive={!reduced}
+              activeDot={{ r: 5, stroke: CHROME.surface, strokeWidth: 2 }}
+            />
             {selected.payback !== null ? (
-              <ReferenceDot x={selected.kwp} y={selected.payback} r={6} fill={SERIES.grid} stroke={CHROME.surface} strokeWidth={2} />
+              <ReferenceDot
+                x={selected.kwp}
+                y={selected.payback}
+                r={6}
+                fill={SERIES.grid}
+                stroke={CHROME.surface}
+                strokeWidth={2}
+              />
             ) : null}
           </LineChart>
         </ResponsiveContainer>
@@ -178,17 +285,29 @@ export function SizingCharts({ curve, selectedKwp }: { curve: SizingPoint[]; sel
  * Grafik tornado sensitivitas: perubahan lama balik modal (tahun) terhadap skenario dasar.
  * Hijau = lebih cepat (baik), merah = lebih lambat (buruk); selalu disertai label nilai.
  */
-export function SensitivityTornado({ items, basePayback, lifetime }: { items: SensitivityItem[]; basePayback: number | null; lifetime: number }) {
+export function SensitivityTornado({
+  items,
+  basePayback,
+  lifetime,
+}: {
+  items: SensitivityItem[];
+  basePayback: number | null;
+  lifetime: number;
+}) {
   if (basePayback === null) {
     return (
       <p className="rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
-        Analisis sensitivitas balik modal tidak ditampilkan karena sistem belum balik modal dalam {lifetime} tahun pada skenario dasar.
+        Analisis sensitivitas balik modal tidak ditampilkan karena sistem belum balik modal dalam {lifetime} tahun pada skenario
+        dasar.
       </p>
     );
   }
   const cap = lifetime + 1;
   const delta = (p: number | null) => (p === null ? cap - basePayback : p - basePayback);
-  const maxAbs = Math.max(0.5, ...items.flatMap((i) => [Math.abs(delta(i.low.paybackYears)), Math.abs(delta(i.high.paybackYears))]));
+  const maxAbs = Math.max(
+    0.5,
+    ...items.flatMap((i) => [Math.abs(delta(i.low.paybackYears)), Math.abs(delta(i.high.paybackYears))]),
+  );
 
   const Bar = ({ value, label, payback }: { value: number; label: string; payback: number | null }) => {
     const width = `${(Math.abs(value) / maxAbs) * 50}%`;

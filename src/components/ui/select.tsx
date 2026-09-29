@@ -11,7 +11,10 @@ export const NativeSelect = React.forwardRef<HTMLSelectElement, React.SelectHTML
         <select ref={ref} className={cn(inputClass, "cursor-pointer appearance-none pr-10 font-medium", className)} {...props}>
           {children}
         </select>
-        <ChevronDown className="pointer-events-none absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-slate-500" aria-hidden />
+        <ChevronDown
+          className="pointer-events-none absolute top-1/2 right-3.5 h-4 w-4 -translate-y-1/2 text-slate-500"
+          aria-hidden
+        />
       </div>
     );
   },

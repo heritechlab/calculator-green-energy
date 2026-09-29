@@ -137,7 +137,12 @@ export function ChartFrame({
   className?: string;
 }) {
   return (
-    <figure className={cn("print-avoid-break m-0 flex min-w-0 flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5", className)}>
+    <figure
+      className={cn(
+        "print-avoid-break m-0 flex min-w-0 flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5",
+        className,
+      )}
+    >
       <figcaption className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h4 className="text-base font-bold text-slate-900">{title}</h4>

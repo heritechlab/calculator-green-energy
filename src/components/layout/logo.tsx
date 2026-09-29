@@ -36,7 +36,12 @@ export function Logo({ className, tone = "dark" }: { className?: string; tone?: 
         <span className={cn("text-lg font-extrabold tracking-tight", tone === "dark" ? "text-slate-900" : "text-white")}>
           Surya<span className={tone === "dark" ? "text-emerald-600" : "text-emerald-300"}>Hitung</span>
         </span>
-        <span className={cn("mt-1 text-[10px] font-semibold tracking-[0.14em] uppercase", tone === "dark" ? "text-slate-500" : "text-emerald-200/80")}>
+        <span
+          className={cn(
+            "mt-1 text-[10px] font-semibold tracking-[0.14em] uppercase",
+            tone === "dark" ? "text-slate-500" : "text-emerald-200/80",
+          )}
+        >
           {siteConfig.platform}
         </span>
       </span>

@@ -2,14 +2,7 @@ import { SEASON_PATTERNS, getCity } from "@/lib/data/locations";
 import { daytimeShare, getLoadProfile } from "@/lib/data/load-profiles";
 import { ROOF_SPACING_FACTOR } from "@/lib/data/panels";
 import { BATTERY_MODULE_KWH, PRICE_TIERS } from "@/lib/data/prices";
-import {
-  formatDecimal,
-  formatKwh,
-  formatNumber,
-  formatPercent,
-  formatRupiah,
-  formatYears,
-} from "@/lib/format";
+import { formatDecimal, formatKwh, formatNumber, formatPercent, formatRupiah, formatYears } from "@/lib/format";
 import { ENGINE_VERSION, MODEL } from "./constants";
 import { annualConsumption, buildContext, buildPvProfile, type EngineContext } from "./context";
 import type { CalculatorInput, Orientation, SystemType } from "./input";
@@ -303,7 +296,11 @@ function buildAssumptions(ctx: EngineContext, ev: Evaluation): AssumptionItem[] 
   const items: AssumptionItem[] = [];
   const add = (group: string, label: string, value: string) => items.push({ group, label, value });
 
-  add("Lokasi & radiasi", "Lokasi", `${i.location.name}${i.location.province ? `, ${i.location.province}` : ""} (${formatDecimal(i.location.lat, 2)}°, ${formatDecimal(i.location.lon, 2)}°)`);
+  add(
+    "Lokasi & radiasi",
+    "Lokasi",
+    `${i.location.name}${i.location.province ? `, ${i.location.province}` : ""} (${formatDecimal(i.location.lat, 2)}°, ${formatDecimal(i.location.lon, 2)}°)`,
+  );
   add("Lokasi & radiasi", "Sumber data radiasi", solarSourceLabel(i));
   add("Lokasi & radiasi", "Radiasi rata-rata", `${formatDecimal(i.location.ghi.reduce((a, b) => a + b, 0) / 12, 2)} kWh/m²/hari`);
   add("Lokasi & radiasi", "Kemiringan & arah panel", `${i.roof.tiltDeg}° · ${ORIENTATION_LABELS[i.roof.orientation]}`);
@@ -314,15 +311,35 @@ function buildAssumptions(ctx: EngineContext, ev: Evaluation): AssumptionItem[] 
   add("Tarif & konsumsi", "Tarif dasar", `Rp${formatNumber(ctx.baseRate, 2)}/kWh`);
   add("Tarif & konsumsi", "Pajak (PBJT + PPN)", formatPercent(ctx.taxFrac * 100, 1));
   add("Tarif & konsumsi", "Konsumsi tahunan", formatKwh(annualConsumption(ctx)));
-  add("Tarif & konsumsi", "Pola pemakaian", `${getLoadProfile(i.consumption.profileId).label} (siang ${formatPercent(daytimeShare(ctx.profile) * 100)})`);
-  add("Tarif & konsumsi", "Rekening minimum", `${MODEL.minimumBillHours} jam nyala (${formatNumber(ctx.minMonthlyKwh)} kWh/bulan)`);
-  add("Tarif & konsumsi", "Kompensasi ekspor", f.exportCompensationPct > 0 ? `${f.exportCompensationPct}% dari tarif` : "Tidak ada (Permen ESDM 2/2024)");
+  add(
+    "Tarif & konsumsi",
+    "Pola pemakaian",
+    `${getLoadProfile(i.consumption.profileId).label} (siang ${formatPercent(daytimeShare(ctx.profile) * 100)})`,
+  );
+  add(
+    "Tarif & konsumsi",
+    "Rekening minimum",
+    `${MODEL.minimumBillHours} jam nyala (${formatNumber(ctx.minMonthlyKwh)} kWh/bulan)`,
+  );
+  add(
+    "Tarif & konsumsi",
+    "Kompensasi ekspor",
+    f.exportCompensationPct > 0 ? `${f.exportCompensationPct}% dari tarif` : "Tidak ada (Permen ESDM 2/2024)",
+  );
 
   add("Sistem", "Panel", ctx.panel.label);
   add("Sistem", "Efisiensi inverter", formatPercent(MODEL.inverterEfficiency * 100, 1));
-  add("Sistem", "Degradasi panel", `${formatDecimal(f.degradationFirstYearPct, 1)}% tahun pertama, ${formatDecimal(f.degradationPct, 2)}%/tahun`);
+  add(
+    "Sistem",
+    "Degradasi panel",
+    `${formatDecimal(f.degradationFirstYearPct, 1)}% tahun pertama, ${formatDecimal(f.degradationPct, 2)}%/tahun`,
+  );
   if (ev.batteryKwh > 0) {
-    add("Sistem", "Baterai", `LiFePO4, DoD ${formatPercent(MODEL.battery.dod * 100)}, efisiensi ${formatPercent(MODEL.battery.roundTripEfficiency * 100)}, umur ${f.batteryLifeYears} tahun`);
+    add(
+      "Sistem",
+      "Baterai",
+      `LiFePO4, DoD ${formatPercent(MODEL.battery.dod * 100)}, efisiensi ${formatPercent(MODEL.battery.roundTripEfficiency * 100)}, umur ${f.batteryLifeYears} tahun`,
+    );
   }
 
   add("Biaya", "Kelas komponen", PRICE_TIERS[f.priceTier].label);
@@ -335,7 +352,11 @@ function buildAssumptions(ctx: EngineContext, ev: Evaluation): AssumptionItem[] 
   add("Finansial", "Tingkat diskonto", `${formatDecimal(f.discountRatePct, 1)}%/tahun`);
   add("Finansial", "Umur analisis", `${f.lifetimeYears} tahun`);
   if (f.paymentMode === "loan") {
-    add("Finansial", "Pembiayaan", `DP ${f.downPaymentPct}%, bunga ${formatDecimal(f.loanRatePct, 1)}%/tahun, tenor ${f.loanTenorYears} tahun`);
+    add(
+      "Finansial",
+      "Pembiayaan",
+      `DP ${f.downPaymentPct}%, bunga ${formatDecimal(f.loanRatePct, 1)}%/tahun, tenor ${f.loanTenorYears} tahun`,
+    );
   }
   add("Lingkungan", "Faktor emisi grid", `${formatDecimal(f.emissionFactor, 2)} kg CO₂/kWh`);
   return items;

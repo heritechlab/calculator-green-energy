@@ -223,9 +223,7 @@ export type InputIssue = { path: string; message: string };
  * - Jika hanya koordinat yang diberikan, iklim diambil dari kota terdekat.
  * - Daya (VA) mengikuti default golongan bila tidak diisi.
  */
-export function resolveInput(
-  raw: unknown,
-): { success: true; data: CalculatorInput } | { success: false; issues: InputIssue[] } {
+export function resolveInput(raw: unknown): { success: true; data: CalculatorInput } | { success: false; issues: InputIssue[] } {
   if (!isPlainObject(raw)) {
     return { success: false, issues: [{ path: "", message: "Body harus berupa objek JSON" }] };
   }

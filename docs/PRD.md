@@ -306,7 +306,7 @@ Prinsip alur:
 | ID | Kebutuhan | Kriteria penerimaan |
 | --- | --- | --- |
 | FR-RS-01 | **Ringkasan utama**: kalimat rekomendasi ("PLTS On-Grid 3,3 kWp — 6 panel 550 Wp") + kartu KPI: Investasi, Hemat/bulan, Balik modal, ROI 25 th, Porsi energi hijau, CO₂ dihindari/tahun | Terbaca tanpa scroll horizontal di 360 px |
-| FR-RS-02 | **Status kelayakan** (Sangat layak / Layak / Kurang layak / Tidak layak) berdasarkan payback & NPV, dengan penjelasan singkat | Konsisten dengan angka |
+| FR-RS-02 | **Status kelayakan** (Sangat layak / Layak / Kurang layak / Belum layak) berdasarkan payback & NPV, dengan ikon + label dan penjelasan singkat | Konsisten dengan angka |
 | FR-RS-03 | **Spesifikasi sistem**: kWp, jumlah & tipe panel, inverter (kW, fase), baterai (kWh, usable), luas atap dibutuhkan, produksi tahunan, *specific yield*, *performance ratio* | – |
 | FR-RS-04 | **Tagihan sebelum vs sesudah** (per bulan, tahun pertama) | Memperhitungkan rekening minimum & pajak |
 | FR-RS-05 | **Grafik energi bulanan**: produksi vs konsumsi, bagian terpakai sendiri, surplus terbuang | Tooltip nilai per bulan |
@@ -377,7 +377,7 @@ Untuk setiap bulan *m* dipakai **hari rata-rata** (Klein, 1977: 17 Jan, 16 Feb, 
 8. **Daya AC**: `P_ac = min(P_dc · η_inv, 1/rasio_DC/AC)`, `η_inv = 97,5%`, rasio DC/AC 1,15 (pemotongan/clipping ikut terhitung).
 9. Hasil: matriks **12 bulan × 24 jam** (kWh/kWp, jam lokal), produksi bulanan, *specific yield* (kWh/kWp/tahun) dan *performance ratio*.
 
-Susut lain (multiplikatif): kotoran 4%, mismatch 2%, kabel DC 1,5%, kabel AC 0,5%, ketersediaan 1%, bayangan sesuai input. Degradasi: tahun-1 1%, lalu 0,5%/tahun.
+Susut lain (multiplikatif): optik/sudut datang & cahaya rendah 3%, kotoran 4%, mismatch 2%, kabel DC 1,5%, kabel AC 0,5%, ketersediaan 1% (total ±11,5%), bayangan sesuai input. Degradasi: tahun-1 1%, lalu 0,5%/tahun. Kalibrasi: PR ±0,78–0,80 (Jakarta ±1.360 kWh/kWp/tahun, Kupang ±1.730).
 
 ### 9.4 Profil beban & simulasi per jam
 
@@ -391,7 +391,7 @@ Susut lain (multiplikatif): kotoran 4%, mismatch 2%, kabel DC 1,5%, kabel AC 0,5
 ### 9.5 Baterai (hybrid & off-grid)
 
 - LiFePO4: DoD 90%, efisiensi bolak-balik 92% (√ per arah), batas daya 0,5C, penurunan kapasitas 2%/tahun, umur 10 tahun lalu diganti (harga penggantian −30%).
-- Simulasi 2 hari berturut-turut per bulan (hari ke-2 dipakai sebagai kondisi tunak): surplus mengisi baterai, defisit dikosongkan dari baterai, sisanya impor PLN (hybrid) atau **tidak terlayani** (off-grid).
+- Hari representatif tiap bulan disimulasikan mulai dari baterai kosong lalu diulang hingga SOC awal ≈ SOC akhir (kondisi tunak, maks. 6 hari) — konservatif dan tidak pernah "meminjam" energi dari muatan awal: surplus mengisi baterai, defisit dikosongkan dari baterai, sisanya impor PLN (hybrid) atau **tidak terlayani** (off-grid).
 - Ukuran otomatis:
   - *Simpan surplus*: kapasitas usable ≈ min(rata-rata surplus harian, beban malam) → dibulatkan ke modul 5,12 kWh.
   - *Cadangan padam*: `jam × beban_esensial / DoD`.
@@ -435,7 +435,7 @@ Metrik:
 - **NPV** = `Σ AK_y/(1+r)^y − CAPEX`; **IRR** = r yang membuat NPV = 0 (bisection).
 - **ROI** = `(Σ AK_y − CAPEX) / CAPEX`.
 - **LCOE** = `(CAPEX + Σ (O&M_y + Ganti_y)/(1+r)^y) / Σ (Produksi_y/(1+r)^y)` → dibandingkan dengan tarif PLN.
-- **Status kelayakan**: Sangat layak (payback ≤ 7 th & NPV > 0), Layak (≤ 10 th & NPV > 0), Kurang layak (NPV > 0 tapi payback > 10 th), Tidak layak (NPV ≤ 0 atau tidak balik modal dalam umur sistem).
+- **Status kelayakan**: Sangat layak (payback ≤ 7 th & NPV > 0), Layak (≤ 10 th & NPV > 0), Kurang layak (NPV > 0 tapi payback > 10 th), Belum layak (NPV ≤ 0 atau tidak balik modal dalam umur sistem).
 
 ### 9.9 Pembiayaan (cicilan)
 
@@ -467,7 +467,7 @@ Hitung ulang payback & NPV dengan satu variabel diubah (lainnya tetap): CAPEX ±
 | Baterai: DoD / efisiensi / umur / harga | 90% / 92% / 10 th / Rp4,5 jt per kWh | – |
 | Efisiensi inverter | 97,5% | 90–99% |
 | Koefisien suhu / NOCT efektif | −0,35%/°C / 48 °C | – |
-| Susut lain (kotoran, mismatch, kabel, ketersediaan) | ±8,7% total | – |
+| Susut lain (optik, kotoran, mismatch, kabel, ketersediaan) | ±11,5% total | – |
 | Panel | 550 Wp, 2,58 m²/panel, faktor ruang 1,2 | 450–700 Wp |
 | PBJT / PPN (R-3) | 3% / 11% | 0–10% / 0–12% |
 | Kompensasi ekspor | 0% (Permen ESDM 2/2024) | 0–100% (skenario) |
@@ -551,12 +551,13 @@ Catatan: untuk golongan TM/TT, produksi PLTS terjadi pada jam LWBP sehingga peng
 
 | Seri | Warna |
 | --- | --- |
-| Produksi PV | Amber (matahari) |
-| Dipakai langsung dari PV | Hijau emerald |
-| Dari/ke baterai | Violet |
-| Impor dari PLN | Biru langit |
-| Surplus terbuang/diekspor | Oranye muda |
-| Konsumsi/beban | Garis slate gelap |
+| Produksi PV (garis) | Amber `#d97706` |
+| Dipakai langsung dari PV | Emerald `#059669` |
+| Dari/ke baterai | Fuchsia `#d946ef` |
+| Impor dari PLN | Biru langit `#0284c7` |
+| Surplus terbuang/diekspor | Oranye `#ea580c` |
+
+Palet divalidasi dengan validator warna (kontras ≥ 3:1 terhadap putih, pemisahan ΔE buta warna antar-seri bersebelahan ≥ 8). Aturan grafik: satu sumbu Y per grafik (tanpa dual-axis — pilihan kapasitas memakai *small multiples*), garis grid tipis solid, bar ≤ 24 px dengan ujung membulat, legenda untuk ≥ 2 seri, teks tidak memakai warna seri, dan setiap grafik memiliki tampilan tabel data.
 
 ### 11.4 Layout responsif
 

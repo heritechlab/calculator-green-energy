@@ -125,13 +125,14 @@ export function QuickEstimate() {
         </div>
       </div>
 
-      <div className="mt-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-lime-50/60 p-4 ring-1 ring-emerald-100" aria-live="polite">
+      <div
+        className="mt-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-lime-50/60 p-4 ring-1 ring-emerald-100"
+        aria-live="polite"
+      >
         {result && ev ? (
           <>
             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-              <p className="text-sm font-semibold text-emerald-900">
-                Rekomendasi PLTS {SYSTEM_LABELS[result.system.type]}
-              </p>
+              <p className="text-sm font-semibold text-emerald-900">Rekomendasi PLTS {SYSTEM_LABELS[result.system.type]}</p>
               <p className="text-xs text-emerald-800/80">
                 {result.system.panelCount} panel × {result.system.panelWp} Wp
               </p>
@@ -151,7 +152,9 @@ export function QuickEstimate() {
               <div className="rounded-xl bg-white/80 px-2 py-2.5">
                 <dt className="text-[11px] font-medium text-slate-500">Balik modal</dt>
                 <dd className="mt-0.5 text-sm font-bold sm:text-base">
-                  {ev.metrics.paybackYears === null ? "> umur" : formatYears(ev.metrics.paybackYears).replace(" tahun", " thn").replace(" bulan", " bln")}
+                  {ev.metrics.paybackYears === null
+                    ? "> umur"
+                    : formatYears(ev.metrics.paybackYears).replace(" tahun", " thn").replace(" bulan", " bln")}
                 </dd>
               </div>
             </dl>

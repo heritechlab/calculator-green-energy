@@ -49,8 +49,7 @@ export function declinationRad(dayOfYear: number): number {
 export function equationOfTimeMinutes(dayOfYear: number): number {
   const b = ((dayOfYear - 1) * 2 * Math.PI) / 365;
   return (
-    229.2 *
-    (0.000075 + 0.001868 * Math.cos(b) - 0.032077 * Math.sin(b) - 0.014615 * Math.cos(2 * b) - 0.04089 * Math.sin(2 * b))
+    229.2 * (0.000075 + 0.001868 * Math.cos(b) - 0.032077 * Math.sin(b) - 0.014615 * Math.cos(2 * b) - 0.04089 * Math.sin(2 * b))
   );
 }
 
@@ -199,8 +198,7 @@ export function computePvProfile(params: PvModelParams): PvProfile {
       poa /= gammas.length;
 
       const irradianceW = (poa / dt) * 1000;
-      const ambient =
-        tMean + MODEL.dailyTempAmplitude * Math.cos((2 * Math.PI * (s.clockHour - MODEL.tempPeakHour)) / 24);
+      const ambient = tMean + MODEL.dailyTempAmplitude * Math.cos((2 * Math.PI * (s.clockHour - MODEL.tempPeakHour)) / 24);
       const cellTemp = ambient + noctFactor * irradianceW;
       const tempFactor = Math.max(0, 1 + params.tempCoeff * (cellTemp - 25));
       const pStc = (irradianceW / 1000) * params.lossFactor;

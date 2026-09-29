@@ -28,8 +28,36 @@ function post(url: string, body: unknown, raw = false) {
 const nasaSample = {
   properties: {
     parameter: {
-      ALLSKY_SFC_SW_DWN: { JAN: 4.1, FEB: 4.3, MAR: 4.6, APR: 4.7, MAY: 4.7, JUN: 4.5, JUL: 4.8, AUG: 5.2, SEP: 5.5, OCT: 5.3, NOV: 4.8, DEC: 4.3, ANN: 4.73 },
-      T2M: { JAN: 27.1, FEB: 27.2, MAR: 27.6, APR: 28, MAY: 28.2, JUN: 27.8, JUL: 27.4, AUG: 27.6, SEP: 28.1, OCT: 28.4, NOV: 28.1, DEC: 27.5, ANN: 27.7 },
+      ALLSKY_SFC_SW_DWN: {
+        JAN: 4.1,
+        FEB: 4.3,
+        MAR: 4.6,
+        APR: 4.7,
+        MAY: 4.7,
+        JUN: 4.5,
+        JUL: 4.8,
+        AUG: 5.2,
+        SEP: 5.5,
+        OCT: 5.3,
+        NOV: 4.8,
+        DEC: 4.3,
+        ANN: 4.73,
+      },
+      T2M: {
+        JAN: 27.1,
+        FEB: 27.2,
+        MAR: 27.6,
+        APR: 28,
+        MAY: 28.2,
+        JUN: 27.8,
+        JUL: 27.4,
+        AUG: 27.6,
+        SEP: 28.1,
+        OCT: 28.4,
+        NOV: 28.1,
+        DEC: 27.5,
+        ANN: 27.7,
+      },
     },
   },
 };
@@ -42,7 +70,9 @@ afterAll(async () => {
 
 describe("POST /api/calculate", () => {
   it("menghitung dari input parsial", async () => {
-    const res = await calculatePost(post("http://test/api/calculate", { location: { cityId: "bandung" }, consumption: { monthlyBill: 1_500_000 } }));
+    const res = await calculatePost(
+      post("http://test/api/calculate", { location: { cityId: "bandung" }, consumption: { monthlyBill: 1_500_000 } }),
+    );
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json.summary.locationName).toBe("Bandung");
@@ -75,13 +105,17 @@ describe("POST /api/calculate", () => {
 
 describe("laporan tersimpan", () => {
   it("menyimpan lalu membaca kembali laporan", async () => {
-    const res = await reportsPost(post("http://test/api/reports", { title: "Rumah Bekasi", input: { location: { cityId: "bekasi" } } }));
+    const res = await reportsPost(
+      post("http://test/api/reports", { title: "Rumah Bekasi", input: { location: { cityId: "bekasi" } } }),
+    );
     expect(res.status).toBe(201);
     const created = await res.json();
     expect(isValidId(created.id)).toBe(true);
     expect(created.url).toMatch(new RegExp(`/hasil/${created.id}$`));
 
-    const got = await reportGet(new Request(`http://test/api/reports/${created.id}`), { params: Promise.resolve({ id: created.id }) });
+    const got = await reportGet(new Request(`http://test/api/reports/${created.id}`), {
+      params: Promise.resolve({ id: created.id }),
+    });
     expect(got.status).toBe(200);
     const report = await got.json();
     expect(report.title).toBe("Rumah Bekasi");
@@ -90,7 +124,9 @@ describe("laporan tersimpan", () => {
   });
 
   it("mengembalikan 404 untuk ID yang tidak ada", async () => {
-    const res = await reportGet(new Request("http://test/api/reports/abcdefghjk"), { params: Promise.resolve({ id: "abcdefghjk" }) });
+    const res = await reportGet(new Request("http://test/api/reports/abcdefghjk"), {
+      params: Promise.resolve({ id: "abcdefghjk" }),
+    });
     expect(res.status).toBe(404);
   });
 

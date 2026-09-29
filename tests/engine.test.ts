@@ -1,12 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  calculate,
-  calculateExtras,
-  createDefaultInput,
-  resolveInput,
-  summarize,
-  type CalculatorInput,
-} from "@/lib/engine";
+import { calculate, calculateExtras, createDefaultInput, resolveInput, summarize, type CalculatorInput } from "@/lib/engine";
 import { MODEL } from "@/lib/engine/constants";
 
 function input(mutate: (i: CalculatorInput) => void = () => {}, city = "jakarta"): CalculatorInput {

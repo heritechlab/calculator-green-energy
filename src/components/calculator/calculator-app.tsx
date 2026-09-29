@@ -19,7 +19,11 @@ import { CostStep } from "./steps/cost-step";
 
 function CalculatorSkeleton() {
   return (
-    <div className="mx-auto w-full max-w-6xl animate-pulse-soft px-4 py-8 sm:px-6" aria-busy="true" aria-label="Memuat kalkulator">
+    <div
+      className="mx-auto w-full max-w-6xl animate-pulse-soft px-4 py-8 sm:px-6"
+      aria-busy="true"
+      aria-label="Memuat kalkulator"
+    >
       <div className="h-8 w-56 rounded-lg bg-slate-200" />
       <div className="mt-6 h-14 rounded-2xl bg-slate-200/70" />
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_340px]">

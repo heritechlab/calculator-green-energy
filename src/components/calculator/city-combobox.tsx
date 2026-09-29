@@ -24,6 +24,7 @@ export function CityCombobox({
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
   const blurTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const results = useMemo(
     () => (query.trim() ? searchCities(query, 8) : POPULAR.map((c) => getCity(c)!).filter(Boolean)),
@@ -34,15 +35,19 @@ export function CityCombobox({
     onSelect(city);
     setQuery("");
     setOpen(false);
+    // Tutup keyboard virtual di ponsel setelah memilih.
+    inputRef.current?.blur();
   };
 
   return (
     <div className="relative">
       <Search className="pointer-events-none absolute top-1/2 left-3.5 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" aria-hidden />
       <input
+        ref={inputRef}
         id={inputId}
         type="text"
         role="combobox"
+        aria-label="Kota atau kabupaten"
         aria-expanded={open}
         aria-controls={listId}
         aria-autocomplete="list"

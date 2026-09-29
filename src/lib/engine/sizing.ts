@@ -48,7 +48,8 @@ export function sizingConstraints(ctx: EngineContext): SizingConstraints {
 // ---------------------------------------------------------------------------
 
 function roundModules(nominalKwh: number, mode: "ceil" | "round"): number {
-  const modules = mode === "ceil" ? Math.ceil(nominalKwh / BATTERY_MODULE_KWH - 1e-9) : Math.round(nominalKwh / BATTERY_MODULE_KWH);
+  const modules =
+    mode === "ceil" ? Math.ceil(nominalKwh / BATTERY_MODULE_KWH - 1e-9) : Math.round(nominalKwh / BATTERY_MODULE_KWH);
   return Math.max(1, modules) * BATTERY_MODULE_KWH;
 }
 
@@ -275,8 +276,7 @@ export function decideSize(ctx: EngineContext): SizingDecision {
     note = "Kapasitas dengan nilai ekonomi terbaik (NPV tertinggi) selama umur sistem.";
   }
 
-  const chosenPoint =
-    curve.find((p) => p.panelCount === panelCount) ?? toPoint(evaluateCount(ctx, panelCount));
+  const chosenPoint = curve.find((p) => p.panelCount === panelCount) ?? toPoint(evaluateCount(ctx, panelCount));
   const options: SizingOption[] = [
     {
       id: "recommended",

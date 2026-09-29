@@ -2,15 +2,7 @@ import { basePricePerKwp, CAPEX_SHARES, PRICE_TIERS, SYSTEM_PREMIUM_PER_KWP } fr
 import { DAYS_IN_MONTH, MODEL } from "./constants";
 import type { EngineContext } from "./context";
 import { annuityPayment, discountedCashflows, irr, npv, paybackPeriod } from "./finance";
-import type {
-  CapexItem,
-  DayResult,
-  Evaluation,
-  HourlyDetail,
-  LoanSummary,
-  MonthlyEnergy,
-  YearRecord,
-} from "./types";
+import type { CapexItem, DayResult, Evaluation, HourlyDetail, LoanSummary, MonthlyEnergy, YearRecord } from "./types";
 
 export interface BatteryConfig {
   /** Kapasitas nominal (kWh). */
@@ -299,7 +291,9 @@ export function evaluateSystem(ctx: EngineContext, opts: EvaluateOptions): Evalu
       let minApplied = false;
       if (offgrid) {
         const baseKwh =
-          ctx.input.system.offgridBaseline === "pln" && beforePostpaid ? Math.max(mo.consumption, ctx.minMonthlyKwh) : mo.consumption;
+          ctx.input.system.offgridBaseline === "pln" && beforePostpaid
+            ? Math.max(mo.consumption, ctx.minMonthlyKwh)
+            : mo.consumption;
         before = baseKwh * baselineRate;
         after = mo.unmet * baselineRate;
       } else {

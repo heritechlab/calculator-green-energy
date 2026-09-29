@@ -10,8 +10,8 @@ export function SiteFooter() {
         <div>
           <Logo tone="light" />
           <p className="mt-4 max-w-sm text-sm leading-relaxed">
-            {siteConfig.name} membantu rumah tangga dan pelaku usaha di Indonesia menghitung kebutuhan PLTS atap,
-            penghematan, dan balik modal secara transparan. Modul pertama dari {siteConfig.platform}.
+            {siteConfig.name} membantu rumah tangga dan pelaku usaha di Indonesia menghitung kebutuhan PLTS atap, penghematan, dan
+            balik modal secara transparan. Modul pertama dari {siteConfig.platform}.
           </p>
         </div>
         <div>
@@ -51,7 +51,9 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs leading-relaxed text-emerald-100/60 sm:px-6 md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} {siteConfig.name}. Hasil perhitungan adalah estimasi, bukan penawaran harga.</p>
+          <p>
+            © {new Date().getFullYear()} {siteConfig.name}. Hasil perhitungan adalah estimasi, bukan penawaran harga.
+          </p>
           <p>Dibuat untuk mempercepat transisi energi hijau Indonesia 🌱</p>
         </div>
       </div>

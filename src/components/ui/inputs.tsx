@@ -20,16 +20,16 @@ function Adornment({ side, children }: { side: "left" | "right"; children: React
   );
 }
 
-export const TextInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
-  function TextInput({ className, ...props }, ref) {
-    return <input ref={ref} className={cn(inputClass, className)} {...props} />;
-  },
-);
+export const TextInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(function TextInput(
+  { className, ...props },
+  ref,
+) {
+  return <input ref={ref} className={cn(inputClass, className)} {...props} />;
+});
 
 const formatThousands = (n: number) => Math.round(n).toLocaleString("id-ID");
 
-export interface CurrencyInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "prefix"> {
+export interface CurrencyInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "prefix"> {
   value: number | null;
   onValueChange: (value: number | null) => void;
   prefix?: string;
@@ -78,7 +78,10 @@ export function CurrencyInput({ value, onValueChange, prefix = "Rp", suffix, cla
           const raw = e.target.value;
           const caret = e.target.selectionStart ?? raw.length;
           caretDigits.current = raw.slice(0, caret).replace(/\D/g, "").length;
-          const digits = raw.replace(/\D/g, "").replace(/^0+(?=\d)/, "").slice(0, 15);
+          const digits = raw
+            .replace(/\D/g, "")
+            .replace(/^0+(?=\d)/, "")
+            .slice(0, 15);
           setText(digits ? formatThousands(Number(digits)) : "");
           onValueChange(digits ? Number(digits) : null);
         }}
@@ -89,8 +92,10 @@ export function CurrencyInput({ value, onValueChange, prefix = "Rp", suffix, cla
   );
 }
 
-export interface NumberInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "min" | "max"> {
+export interface NumberInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "value" | "onChange" | "min" | "max"
+> {
   value: number | null;
   onValueChange: (value: number | null) => void;
   min?: number;

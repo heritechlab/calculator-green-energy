@@ -127,7 +127,10 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-forest-deep text-white">
-        <div className="bg-grid-faint absolute inset-0 [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_70%)]" aria-hidden />
+        <div
+          className="bg-grid-faint absolute inset-0 [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_70%)]"
+          aria-hidden
+        />
         <div className="absolute -top-48 -right-40 h-[560px] w-[560px] rounded-full bg-amber-400/25 blur-3xl" aria-hidden />
         <div className="absolute -bottom-48 -left-40 h-[480px] w-[480px] rounded-full bg-emerald-500/25 blur-3xl" aria-hidden />
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-20">
@@ -139,8 +142,8 @@ export default function HomePage() {
               Hitung kebutuhan PLTS &amp; <span className="text-amber-300">balik modal</span> Anda dalam 2 menit
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-emerald-100/90 sm:text-lg">
-              Kalkulator panel surya atap yang lengkap namun mudah: berapa kWp yang dibutuhkan, berapa biayanya, hemat
-              berapa per bulan, dan kapan investasi kembali — dihitung dengan data matahari kota Anda.
+              Kalkulator panel surya atap yang lengkap namun mudah: berapa kWp yang dibutuhkan, berapa biayanya, hemat berapa per
+              bulan, dan kapan investasi kembali — dihitung dengan data matahari kota Anda.
             </p>
             <ul className="mt-6 grid gap-2.5 text-sm text-emerald-50 sm:grid-cols-2">
               {[
@@ -193,7 +196,9 @@ export default function HomePage() {
       <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
         <div className="max-w-2xl">
           <p className="text-sm font-bold tracking-wide text-emerald-700 uppercase">Cara kerja</p>
-          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Tiga langkah menuju atap yang menghasilkan listrik</h2>
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+            Tiga langkah menuju atap yang menghasilkan listrik
+          </h2>
         </div>
         <ol className="mt-10 grid gap-5 md:grid-cols-3">
           {steps.map((s, i) => (
@@ -216,10 +221,12 @@ export default function HomePage() {
         <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
           <div className="max-w-2xl">
             <p className="text-sm font-bold tracking-wide text-emerald-700 uppercase">Kenapa {siteConfig.name}</p>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Detail seperti konsultan, semudah kalkulator</h2>
+            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+              Detail seperti konsultan, semudah kalkulator
+            </h2>
             <p className="mt-3 text-base leading-relaxed text-slate-600">
-              Semua asumsi terbuka dan bisa diubah. Tidak ada angka ajaib — Anda bisa melihat bagaimana setiap rupiah
-              penghematan dihitung.
+              Semua asumsi terbuka dan bisa diubah. Tidak ada angka ajaib — Anda bisa melihat bagaimana setiap rupiah penghematan
+              dihitung.
             </p>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -241,11 +248,13 @@ export default function HomePage() {
         <div className="grid gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-700 via-emerald-800 to-forest p-7 text-white sm:p-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
           <div>
             <Badge tone="white">Aturan baru</Badge>
-            <h2 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl">Surplus listrik ke PLN kini tidak mengurangi tagihan</h2>
+            <h2 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl">
+              Surplus listrik ke PLN kini tidak mengurangi tagihan
+            </h2>
             <p className="mt-3 text-sm leading-relaxed text-emerald-50/90 sm:text-base">
-              Sejak Permen ESDM No. 2 Tahun 2024, skema ekspor–impor dihapus. Panel yang terlalu besar justru membuang
-              listrik gratis ke jaringan. Karena itu {siteConfig.name} mencocokkan produksi panel dengan jam pemakaian
-              Anda, lalu mencari ukuran dengan nilai ekonomi terbaik.
+              Sejak Permen ESDM No. 2 Tahun 2024, skema ekspor–impor dihapus. Panel yang terlalu besar justru membuang listrik
+              gratis ke jaringan. Karena itu {siteConfig.name} mencocokkan produksi panel dengan jam pemakaian Anda, lalu mencari
+              ukuran dengan nilai ekonomi terbaik.
             </p>
             <Button asChild variant="white" className="mt-6">
               <Link href="/panduan#regulasi">
@@ -273,8 +282,12 @@ export default function HomePage() {
       <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 sm:pb-20">
         <div className="max-w-2xl">
           <p className="text-sm font-bold tracking-wide text-emerald-700 uppercase">Jenis sistem</p>
-          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">On-grid, hybrid, atau off-grid?</h2>
-          <p className="mt-3 text-base leading-relaxed text-slate-600">Kalkulator membandingkan ketiganya secara otomatis untuk pemakaian Anda.</p>
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+            On-grid, hybrid, atau off-grid?
+          </h2>
+          <p className="mt-3 text-base leading-relaxed text-slate-600">
+            Kalkulator membandingkan ketiganya secara otomatis untuk pemakaian Anda.
+          </p>
         </div>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {systems.map((s) => (
@@ -296,9 +309,21 @@ export default function HomePage() {
       <section className="bg-white">
         <div className="mx-auto grid w-full max-w-6xl gap-4 px-4 py-14 sm:px-6 md:grid-cols-3">
           {[
-            { icon: HomeIcon, title: "Rumah tangga", text: "Ketahui ukuran yang pas dan hindari membayar panel yang listriknya terbuang." },
-            { icon: Building2, title: "Bisnis & industri", text: "NPV, IRR, LCOE, dan arus kas tahunan untuk keputusan investasi dan pengajuan kredit." },
-            { icon: FileText, title: "Installer & konsultan", text: "Estimasi cepat dengan harga Anda sendiri, lengkap dengan laporan siap dibagikan." },
+            {
+              icon: HomeIcon,
+              title: "Rumah tangga",
+              text: "Ketahui ukuran yang pas dan hindari membayar panel yang listriknya terbuang.",
+            },
+            {
+              icon: Building2,
+              title: "Bisnis & industri",
+              text: "NPV, IRR, LCOE, dan arus kas tahunan untuk keputusan investasi dan pengajuan kredit.",
+            },
+            {
+              icon: FileText,
+              title: "Installer & konsultan",
+              text: "Estimasi cepat dengan harga Anda sendiri, lengkap dengan laporan siap dibagikan.",
+            },
           ].map((c) => (
             <div key={c.title} className="flex gap-4 rounded-3xl p-5">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 text-white">
@@ -316,7 +341,9 @@ export default function HomePage() {
       {/* FAQ */}
       <section className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
         <p className="text-center text-sm font-bold tracking-wide text-emerald-700 uppercase">Pertanyaan umum</p>
-        <h2 className="mt-2 text-center text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Yang sering ditanyakan</h2>
+        <h2 className="mt-2 text-center text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+          Yang sering ditanyakan
+        </h2>
         <FaqList limit={5} className="mt-10" />
         <p className="mt-6 text-center text-sm">
           <Link href="/panduan#faq" className="font-semibold text-emerald-700 hover:text-emerald-800">
@@ -338,7 +365,10 @@ export default function HomePage() {
             </div>
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {upcoming.map((u) => (
-                <li key={u.name} className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-4 text-center text-sm font-semibold text-slate-600 ring-1 ring-slate-200">
+                <li
+                  key={u.name}
+                  className="flex flex-col items-center gap-2 rounded-2xl bg-white px-4 py-4 text-center text-sm font-semibold text-slate-600 ring-1 ring-slate-200"
+                >
                   <u.icon className="h-5 w-5 text-emerald-600" aria-hidden />
                   {u.name}
                   <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-500">Segera</span>

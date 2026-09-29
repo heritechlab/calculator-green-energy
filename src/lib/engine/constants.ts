@@ -72,7 +72,5 @@ export function lossFactor(shadingPct: number): number {
 }
 
 /** Ukuran inverter standar (kW AC). */
-export const INVERTER_SIZES_KW = [
-  1.5, 2, 3, 3.6, 4, 5, 6, 8, 10, 12, 15, 17, 20, 25, 30, 36, 40, 50, 60, 75, 100, 110, 125,
-];
+export const INVERTER_SIZES_KW = [1.5, 2, 3, 3.6, 4, 5, 6, 8, 10, 12, 15, 17, 20, 25, 30, 36, 40, 50, 60, 75, 100, 110, 125];
 export const HYBRID_INVERTER_SIZES_KW = [3, 3.6, 5, 6, 8, 10, 12, 15, 20, 25, 30, 50];

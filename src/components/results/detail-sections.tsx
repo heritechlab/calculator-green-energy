@@ -18,15 +18,28 @@ export function CashflowTable({ result }: { result: CalculationResult }) {
           <span className="block font-bold text-slate-900">Tabel arus kas tahunan</span>
           <span className="block text-[13px] text-slate-500">Produksi, penghematan, biaya, dan kumulatif per tahun</span>
         </span>
-        <span className="rounded-lg bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-800 group-open:hidden">Tampilkan</span>
-        <span className="hidden rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700 group-open:inline">Sembunyikan</span>
+        <span className="rounded-lg bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-800 group-open:hidden">
+          Tampilkan
+        </span>
+        <span className="hidden rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700 group-open:inline">
+          Sembunyikan
+        </span>
       </summary>
       <div className="scroll-thin overflow-x-auto border-t border-slate-100">
         <table className="w-full min-w-[760px] border-collapse text-right text-[13px] tabular">
           <caption className="sr-only">Arus kas tahunan</caption>
           <thead className="bg-slate-50 text-slate-500">
             <tr>
-              {["Tahun", "Produksi", "Hemat tagihan", "O&M", "Penggantian", "Arus kas", "Kumulatif", ...(hasLoan ? ["Cicilan", "Kumulatif + cicilan"] : [])].map((h, i) => (
+              {[
+                "Tahun",
+                "Produksi",
+                "Hemat tagihan",
+                "O&M",
+                "Penggantian",
+                "Arus kas",
+                "Kumulatif",
+                ...(hasLoan ? ["Cicilan", "Kumulatif + cicilan"] : []),
+              ].map((h, i) => (
                 <th key={h} scope="col" className={cn("px-3 py-2.5 font-semibold whitespace-nowrap", i === 0 && "text-left")}>
                   {h}
                 </th>
@@ -63,11 +76,15 @@ export function CashflowTable({ result }: { result: CalculationResult }) {
                   {y.replacement > 0 ? `${formatRupiah(-y.replacement)} (${y.replacementItems.join(", ")})` : "–"}
                 </td>
                 <td className="px-3 py-2 font-semibold text-slate-900">{formatRupiah(y.cashflow)}</td>
-                <td className={cn("px-3 py-2 font-semibold", y.cumulative >= 0 ? "text-emerald-700" : "text-rose-700")}>{formatRupiah(y.cumulative)}</td>
+                <td className={cn("px-3 py-2 font-semibold", y.cumulative >= 0 ? "text-emerald-700" : "text-rose-700")}>
+                  {formatRupiah(y.cumulative)}
+                </td>
                 {hasLoan ? (
                   <>
                     <td className="px-3 py-2 text-slate-700">{y.loanPayment > 0 ? formatRupiah(-y.loanPayment) : "–"}</td>
-                    <td className={cn("px-3 py-2 font-semibold", y.cumulativeWithLoan >= 0 ? "text-emerald-700" : "text-rose-700")}>
+                    <td
+                      className={cn("px-3 py-2 font-semibold", y.cumulativeWithLoan >= 0 ? "text-emerald-700" : "text-rose-700")}
+                    >
                       {formatRupiah(y.cumulativeWithLoan)}
                     </td>
                   </>
@@ -93,7 +110,8 @@ export function LoanCard({ result }: { result: CalculationResult }) {
           <Landmark className="h-5 w-5 text-emerald-700" aria-hidden /> Simulasi cicilan
         </CardTitle>
         <CardDescription>
-          DP {formatPercent((loan.downPayment / result.evaluation.capex) * 100)} · bunga {formatDecimal(loan.ratePct, 1)}%/th · tenor {loan.tenorYears} tahun
+          DP {formatPercent((loan.downPayment / result.evaluation.capex) * 100)} · bunga {formatDecimal(loan.ratePct, 1)}%/th ·
+          tenor {loan.tenorYears} tahun
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -147,7 +165,13 @@ export function SizingOptionsList({
       {options.map((o) => {
         const active = Math.abs(o.point.kwp - currentKwp) < 1e-6;
         return (
-          <div key={`${o.id}-${o.point.panelCount}`} className={cn("flex flex-col rounded-2xl border p-4", active ? "border-emerald-500 bg-emerald-50/60" : "border-slate-200 bg-white")}>
+          <div
+            key={`${o.id}-${o.point.panelCount}`}
+            className={cn(
+              "flex flex-col rounded-2xl border p-4",
+              active ? "border-emerald-500 bg-emerald-50/60" : "border-slate-200 bg-white",
+            )}
+          >
             <div className="flex items-center justify-between gap-2">
               <p className="text-sm font-bold text-slate-900">{o.label}</p>
               {active ? (
@@ -166,7 +190,9 @@ export function SizingOptionsList({
               <dt className="text-slate-500">Hemat/tahun</dt>
               <dd className="text-right font-semibold text-slate-800">{formatRupiahCompact(o.point.annualSavings)}</dd>
               <dt className="text-slate-500">Balik modal</dt>
-              <dd className="text-right font-semibold text-slate-800">{o.point.paybackYears === null ? "–" : `${formatDecimal(o.point.paybackYears, 1)} th`}</dd>
+              <dd className="text-right font-semibold text-slate-800">
+                {o.point.paybackYears === null ? "–" : `${formatDecimal(o.point.paybackYears, 1)} th`}
+              </dd>
               <dt className="text-slate-500">Energi hijau</dt>
               <dd className="text-right font-semibold text-slate-800">{formatPercent(o.point.solarFractionPct)}</dd>
             </dl>
@@ -193,7 +219,9 @@ export function ComparisonTable({
   onSwitch?: (type: SystemType) => void;
 }) {
   if (!extras) {
-    return <div className="h-64 animate-pulse-soft rounded-2xl bg-slate-100" aria-busy="true" aria-label="Menghitung perbandingan" />;
+    return (
+      <div className="h-64 animate-pulse-soft rounded-2xl bg-slate-100" aria-busy="true" aria-label="Menghitung perbandingan" />
+    );
   }
   const items = extras.comparison;
   return (
@@ -201,10 +229,18 @@ export function ComparisonTable({
       {items.map((c) => {
         const current = c.type === currentType;
         return (
-          <div key={c.type} className={cn("flex flex-col rounded-3xl border p-5", current ? "border-emerald-500 bg-white shadow-soft ring-4 ring-emerald-500/10" : "border-slate-200 bg-white")}>
+          <div
+            key={c.type}
+            className={cn(
+              "flex flex-col rounded-3xl border p-5",
+              current ? "border-emerald-500 bg-white shadow-soft ring-4 ring-emerald-500/10" : "border-slate-200 bg-white",
+            )}
+          >
             <div className="flex items-center justify-between gap-2">
               <h4 className="text-lg font-extrabold text-slate-900">PLTS {c.label}</h4>
-              {current ? <span className="rounded-full bg-emerald-600 px-2.5 py-0.5 text-xs font-bold text-white">Pilihan Anda</span> : null}
+              {current ? (
+                <span className="rounded-full bg-emerald-600 px-2.5 py-0.5 text-xs font-bold text-white">Pilihan Anda</span>
+              ) : null}
             </div>
             {c.applicable ? (
               <>

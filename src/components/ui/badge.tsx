@@ -13,11 +13,7 @@ const tones = {
 
 export type BadgeTone = keyof typeof tones;
 
-export function Badge({
-  tone = "green",
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone }) {
+export function Badge({ tone = "green", className, ...props }: React.HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone }) {
   return (
     <span
       className={cn(

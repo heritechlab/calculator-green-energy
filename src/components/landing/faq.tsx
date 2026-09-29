@@ -42,7 +42,10 @@ export function FaqList({ limit, className }: { limit?: number; className?: stri
   return (
     <div className={cn("flex flex-col gap-3", className)}>
       {items.map((f) => (
-        <details key={f.q} className="group rounded-2xl border border-slate-200 bg-white open:border-emerald-200 open:shadow-soft">
+        <details
+          key={f.q}
+          className="group rounded-2xl border border-slate-200 bg-white open:border-emerald-200 open:shadow-soft"
+        >
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left font-semibold text-slate-900 [&::-webkit-details-marker]:hidden">
             {f.q}
             <ChevronDown className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-open:rotate-180" aria-hidden />

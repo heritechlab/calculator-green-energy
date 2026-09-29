@@ -44,7 +44,10 @@ export function ResultHero({ result }: { result: CalculationResult }) {
   const loc = result.input.location;
   const net25 = ev.metrics.totalNetCashflow - ev.capex;
   return (
-    <section aria-labelledby="hasil-judul" className="overflow-hidden rounded-[2rem] bg-forest-deep text-white shadow-lift print:rounded-none print:bg-white print:text-slate-900 print:shadow-none">
+    <section
+      aria-labelledby="hasil-judul"
+      className="overflow-hidden rounded-[2rem] bg-forest-deep text-white shadow-lift print:rounded-none print:bg-white print:text-slate-900 print:shadow-none"
+    >
       <div className="relative p-6 sm:p-8">
         <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-amber-400/25 blur-3xl print:hidden" aria-hidden />
         <div className="absolute -bottom-32 left-10 h-72 w-72 rounded-full bg-emerald-500/25 blur-3xl print:hidden" aria-hidden />
@@ -69,7 +72,9 @@ export function ResultHero({ result }: { result: CalculationResult }) {
           </div>
           <div className="shrink-0 rounded-3xl bg-white/10 p-5 ring-1 ring-white/15 backdrop-blur print:ring-slate-200">
             <p className="text-sm text-emerald-100 print:text-slate-500">Hemat per bulan (tahun pertama)</p>
-            <p className="mt-1 text-4xl font-extrabold tracking-tight sm:text-5xl">{formatRupiahCompact(ev.year1.savings / 12)}</p>
+            <p className="mt-1 text-4xl font-extrabold tracking-tight sm:text-5xl">
+              {formatRupiahCompact(ev.year1.savings / 12)}
+            </p>
             <p className="mt-1 text-sm text-emerald-100/90 print:text-slate-500">
               Tagihan {formatRupiahCompact(ev.year1.billBefore / 12)} → {formatRupiahCompact(ev.year1.billAfter / 12)}
             </p>
@@ -131,10 +136,33 @@ export function GreenNeedsCard({ result }: { result: CalculationResult }) {
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatTile icon={<Zap className="h-4 w-4" aria-hidden />} tone="sky" label="Pemakaian" value={formatKwh(c.annualKwh / 12)} sub="rata-rata per bulan" />
-          <StatTile icon={<Sun className="h-4 w-4" aria-hidden />} tone="amber" label="Pemakaian siang" value={formatPercent(c.daytimeSharePct)} sub="pukul 06.00–18.00" />
-          <StatTile icon={<Gauge className="h-4 w-4" aria-hidden />} tone="green" label="Produksi per kWp" value={`${formatNumber(result.solar.specificYield)} kWh`} sub="per tahun di lokasi Anda" />
-          <StatTile icon={<LayoutGrid className="h-4 w-4" aria-hidden />} label="Setara 100% kebutuhan" value={formatKwp(s.netZeroKwp)} sub={`${s.netZeroPanels} panel · ±${formatNumber(s.netZeroRoofM2)} m²`} />
+          <StatTile
+            icon={<Zap className="h-4 w-4" aria-hidden />}
+            tone="sky"
+            label="Pemakaian"
+            value={formatKwh(c.annualKwh / 12)}
+            sub="rata-rata per bulan"
+          />
+          <StatTile
+            icon={<Sun className="h-4 w-4" aria-hidden />}
+            tone="amber"
+            label="Pemakaian siang"
+            value={formatPercent(c.daytimeSharePct)}
+            sub="pukul 06.00–18.00"
+          />
+          <StatTile
+            icon={<Gauge className="h-4 w-4" aria-hidden />}
+            tone="green"
+            label="Produksi per kWp"
+            value={`${formatNumber(result.solar.specificYield)} kWh`}
+            sub="per tahun di lokasi Anda"
+          />
+          <StatTile
+            icon={<LayoutGrid className="h-4 w-4" aria-hidden />}
+            label="Setara 100% kebutuhan"
+            value={formatKwp(s.netZeroKwp)}
+            sub={`${s.netZeroPanels} panel · ±${formatNumber(s.netZeroRoofM2)} m²`}
+          />
         </div>
         <div className="rounded-2xl bg-emerald-50/70 p-4 text-sm leading-relaxed text-emerald-950">
           <div className="mb-2 flex items-center justify-between text-[13px] font-semibold">
@@ -143,11 +171,15 @@ export function GreenNeedsCard({ result }: { result: CalculationResult }) {
           </div>
           <Meter value={ev.year1.solarFractionPct} label="Porsi energi hijau" />
           <p className="mt-3">
-            Secara tahunan, <strong>{formatKwp(s.netZeroKwp)}</strong> akan menyamai seluruh pemakaian Anda. Namun karena
-            {s.type === "on-grid" ? " listrik yang diekspor ke PLN tidak lagi mengurangi tagihan" : " sebagian energi disimpan dengan susut baterai"},
-            kapasitas yang direkomendasikan adalah <strong>{formatKwp(s.kwp)}</strong> — memenuhi{" "}
-            <strong>{formatPercent(ev.year1.solarFractionPct)}</strong> kebutuhan dengan{" "}
-            <strong>{formatPercent(ev.year1.selfConsumptionPct)}</strong> produksi benar-benar terpakai.
+            Secara tahunan, <strong>{formatKwp(s.netZeroKwp)}</strong> akan menyamai seluruh pemakaian Anda.{" "}
+            {s.type === "off-grid"
+              ? "Sistem off-grid dirancang agar kebutuhan terpenuhi dengan bantuan baterai: "
+              : s.type === "hybrid"
+                ? "Karena surplus ke PLN tidak dikompensasi dan setiap kWh baterai menambah biaya, "
+                : "Karena surplus yang diekspor ke PLN tidak lagi mengurangi tagihan, "}
+            kapasitas {s.type === "off-grid" ? "yang dibutuhkan" : "yang direkomendasikan"} adalah{" "}
+            <strong>{formatKwp(s.kwp)}</strong> — memenuhi <strong>{formatPercent(ev.year1.solarFractionPct)}</strong> kebutuhan
+            dengan <strong>{formatPercent(ev.year1.selfConsumptionPct)}</strong> produksi benar-benar terpakai.
           </p>
           <p className="mt-2 text-[13px] text-emerald-900/80">{s.sizingNote}</p>
         </div>
@@ -160,7 +192,11 @@ export function SystemSpecCard({ result }: { result: CalculationResult }) {
   const s = result.system;
   const ev = result.evaluation;
   const rows: { icon: React.ReactNode; label: string; value: React.ReactNode }[] = [
-    { icon: <Sun className="h-4 w-4" aria-hidden />, label: "Kapasitas panel", value: `${formatKwp(s.kwp)} (${s.panelCount} × ${s.panelLabel})` },
+    {
+      icon: <Sun className="h-4 w-4" aria-hidden />,
+      label: "Kapasitas panel",
+      value: `${formatKwp(s.kwp)} (${s.panelCount} × ${s.panelLabel})`,
+    },
     {
       icon: <Cpu className="h-4 w-4" aria-hidden />,
       label: "Inverter",
@@ -175,8 +211,16 @@ export function SystemSpecCard({ result }: { result: CalculationResult }) {
           },
         ]
       : []),
-    { icon: <Ruler className="h-4 w-4" aria-hidden />, label: "Luas atap dibutuhkan", value: `±${formatNumber(s.roofAreaM2)} m²` },
-    { icon: <Zap className="h-4 w-4" aria-hidden />, label: "Produksi tahun pertama", value: `${formatKwh(ev.year1.production)} (${formatKwh(ev.year1.production / 12)}/bulan)` },
+    {
+      icon: <Ruler className="h-4 w-4" aria-hidden />,
+      label: "Luas atap dibutuhkan",
+      value: `±${formatNumber(s.roofAreaM2)} m²`,
+    },
+    {
+      icon: <Zap className="h-4 w-4" aria-hidden />,
+      label: "Produksi tahun pertama",
+      value: `${formatKwh(ev.year1.production)} (${formatKwh(ev.year1.production / 12)}/bulan)`,
+    },
     {
       icon: <Gauge className="h-4 w-4" aria-hidden />,
       label: "Kinerja sistem",
@@ -193,7 +237,9 @@ export function SystemSpecCard({ result }: { result: CalculationResult }) {
         <dl className="divide-y divide-slate-100">
           {rows.map((r) => (
             <div key={r.label} className="flex items-start gap-3 py-3">
-              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">{r.icon}</span>
+              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+                {r.icon}
+              </span>
               <div className="min-w-0">
                 <dt className="text-[13px] text-slate-500">{r.label}</dt>
                 <dd className="text-sm font-semibold text-slate-900">{r.value}</dd>
@@ -214,7 +260,8 @@ export function CapexCard({ result }: { result: CalculationResult }) {
       <CardHeader>
         <CardTitle>Estimasi biaya investasi</CardTitle>
         <CardDescription>
-          {formatRupiah(ev.pricePerKwp)}/kWp terpasang{result.input.finance.pricePerKwpOverride ? " (harga Anda)" : ` · kelas ${result.input.finance.priceTier}`}
+          {formatRupiah(ev.pricePerKwp)}/kWp terpasang
+          {result.input.finance.pricePerKwpOverride ? " (harga Anda)" : ` · kelas ${result.input.finance.priceTier}`}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -236,7 +283,8 @@ export function CapexCard({ result }: { result: CalculationResult }) {
           <span className="text-xl font-extrabold text-slate-900">{formatRupiah(ev.capex)}</span>
         </div>
         <p className="mt-2 text-[13px] leading-relaxed text-slate-500">
-          Rincian per komponen adalah estimasi komposisi umum pasar. Harga aktual dapat berbeda ±20% tergantung merek, lokasi, dan kondisi atap.
+          Rincian per komponen adalah estimasi komposisi umum pasar. Harga aktual dapat berbeda ±20% tergantung merek, lokasi, dan
+          kondisi atap.
         </p>
       </CardContent>
     </Card>
@@ -293,10 +341,33 @@ export function EnergyStats({ result }: { result: CalculationResult }) {
   const surplusPct = y1.production > 0 ? (y1.exported / y1.production) * 100 : 0;
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-      <StatTile icon={<Sun className="h-4 w-4" aria-hidden />} tone="amber" label="Produksi tahun ke-1" value={formatKwh(y1.production)} sub={`${formatKwh(y1.production / 365)}/hari rata-rata`} />
-      <StatTile icon={<Leaf className="h-4 w-4" aria-hidden />} tone="green" label="Produksi terpakai" value={formatPercent(y1.selfConsumptionPct)} sub={`${formatKwh(y1.used)} menggantikan listrik PLN`} />
-      <StatTile icon={<Zap className="h-4 w-4" aria-hidden />} tone="sky" label={result.system.type === "off-grid" ? "Tidak terpenuhi" : "Masih dari PLN"} value={formatKwh(result.system.type === "off-grid" ? y1.unmet : y1.gridImport)} sub="per tahun" />
-      <StatTile icon={<Factory className="h-4 w-4" aria-hidden />} label="Surplus tidak terpakai" value={formatPercent(surplusPct)} sub={`${formatKwh(y1.exported)} per tahun`} />
+      <StatTile
+        icon={<Sun className="h-4 w-4" aria-hidden />}
+        tone="amber"
+        label="Produksi tahun ke-1"
+        value={formatKwh(y1.production)}
+        sub={`${formatKwh(y1.production / 365)}/hari rata-rata`}
+      />
+      <StatTile
+        icon={<Leaf className="h-4 w-4" aria-hidden />}
+        tone="green"
+        label="Produksi terpakai"
+        value={formatPercent(y1.selfConsumptionPct)}
+        sub={`${formatKwh(y1.used)} menggantikan listrik PLN`}
+      />
+      <StatTile
+        icon={<Zap className="h-4 w-4" aria-hidden />}
+        tone="sky"
+        label={result.system.type === "off-grid" ? "Tidak terpenuhi" : "Masih dari PLN"}
+        value={formatKwh(result.system.type === "off-grid" ? y1.unmet : y1.gridImport)}
+        sub="per tahun"
+      />
+      <StatTile
+        icon={<Factory className="h-4 w-4" aria-hidden />}
+        label="Surplus tidak terpakai"
+        value={formatPercent(surplusPct)}
+        sub={`${formatKwh(y1.exported)} per tahun`}
+      />
     </div>
   );
 }
@@ -337,9 +408,26 @@ export function FinanceStats({ result }: { result: CalculationResult }) {
   const rate = result.consumption.effectiveRate;
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-      <StatTile icon={<Clock className="h-4 w-4" aria-hidden />} tone="green" label="Balik modal" value={formatYears(m.paybackYears, "> umur sistem")} sub={`Terdiskonto: ${formatYears(m.discountedPaybackYears, "tidak tercapai")}`} />
-      <StatTile icon={<CircleDollarSign className="h-4 w-4" aria-hidden />} tone="green" label="NPV" value={formatRupiahCompact(m.npv)} sub={`Diskonto ${formatDecimal(result.input.finance.discountRatePct, 1)}%/th`} />
-      <StatTile icon={<TrendingUp className="h-4 w-4" aria-hidden />} label="IRR · ROI" value={m.irr === null ? "–" : formatPercent(m.irr * 100, 1)} sub={`ROI ${formatPercent(m.roiPct)} selama ${result.input.finance.lifetimeYears} th`} />
+      <StatTile
+        icon={<Clock className="h-4 w-4" aria-hidden />}
+        tone="green"
+        label="Balik modal"
+        value={formatYears(m.paybackYears, "> umur sistem")}
+        sub={`Terdiskonto: ${formatYears(m.discountedPaybackYears, "tidak tercapai")}`}
+      />
+      <StatTile
+        icon={<CircleDollarSign className="h-4 w-4" aria-hidden />}
+        tone="green"
+        label="NPV"
+        value={formatRupiahCompact(m.npv)}
+        sub={`Diskonto ${formatDecimal(result.input.finance.discountRatePct, 1)}%/th`}
+      />
+      <StatTile
+        icon={<TrendingUp className="h-4 w-4" aria-hidden />}
+        label="IRR · ROI"
+        value={m.irr === null ? "–" : formatPercent(m.irr * 100, 1)}
+        sub={`ROI ${formatPercent(m.roiPct)} selama ${result.input.finance.lifetimeYears} th`}
+      />
       <StatTile
         icon={<Zap className="h-4 w-4" aria-hidden />}
         tone="amber"

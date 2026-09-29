@@ -1,12 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  formatKwp,
-  formatPercent,
-  formatRupiah,
-  formatRupiahCompact,
-  formatYears,
-  parseLocaleNumber,
-} from "@/lib/format";
+import { formatKwp, formatPercent, formatRupiah, formatRupiahCompact, formatYears, parseLocaleNumber } from "@/lib/format";
 
 describe("format id-ID", () => {
   it("memformat Rupiah", () => {

@@ -45,17 +45,19 @@ export function IrradianceBars({ values, label }: { values: number[]; label: str
           );
         })}
       </svg>
-      <table className="sr-only">
-        <caption>{label}</caption>
-        <tbody>
-          {values.map((v, i) => (
-            <tr key={i}>
-              <th scope="row">{MONTH_NAMES[i]}</th>
-              <td>{formatDecimal(v, 2)} kWh/m²/hari</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="sr-only">
+        <table>
+          <caption>{label}</caption>
+          <tbody>
+            {values.map((v, i) => (
+              <tr key={i}>
+                <th scope="row">{MONTH_NAMES[i]}</th>
+                <td>{formatDecimal(v, 2)} kWh/m²/hari</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </figure>
   );
 }

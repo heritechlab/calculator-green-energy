@@ -27,7 +27,9 @@ export function Stepper({ current, onSelect }: { current: WizardStepId; onSelect
                 aria-current={i === index ? "step" : undefined}
                 className="block w-full py-2"
               >
-                <span className={cn("block h-1.5 rounded-full transition-colors", i <= index ? "bg-emerald-600" : "bg-slate-200")} />
+                <span
+                  className={cn("block h-1.5 rounded-full transition-colors", i <= index ? "bg-emerald-600" : "bg-slate-200")}
+                />
               </button>
             </li>
           ))}
@@ -47,9 +49,7 @@ export function Stepper({ current, onSelect }: { current: WizardStepId; onSelect
                 aria-current={active ? "step" : undefined}
                 className={cn(
                   "flex w-full items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-colors",
-                  active
-                    ? "border-emerald-500 bg-white shadow-soft"
-                    : "border-transparent hover:border-slate-200 hover:bg-white",
+                  active ? "border-emerald-500 bg-white shadow-soft" : "border-transparent hover:border-slate-200 hover:bg-white",
                 )}
               >
                 <span

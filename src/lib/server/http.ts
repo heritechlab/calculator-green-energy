@@ -33,7 +33,9 @@ export async function readJson(request: Request, maxBytes = 64 * 1024): Promise<
 }
 
 /** Tangani kesalahan pembacaan body secara seragam. */
-export async function parseBody(request: Request): Promise<{ ok: true; body: unknown } | { ok: false; response: NextResponse<ApiErrorBody> }> {
+export async function parseBody(
+  request: Request,
+): Promise<{ ok: true; body: unknown } | { ok: false; response: NextResponse<ApiErrorBody> }> {
   try {
     return { ok: true, body: await readJson(request) };
   } catch (error) {

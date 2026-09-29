@@ -35,16 +35,14 @@ export function nasaPowerEnabled(): boolean {
 
 /** Parse respons klimatologi NASA POWER menjadi 12 nilai GHI & suhu. */
 export function parseNasaPower(json: unknown): { ghi: number[]; temp: number[] } | null {
-  const parameter = (json as { properties?: { parameter?: Record<string, Record<string, number>> } })?.properties
-    ?.parameter;
+  const parameter = (json as { properties?: { parameter?: Record<string, Record<string, number>> } })?.properties?.parameter;
   const ghiRaw = parameter?.ALLSKY_SFC_SW_DWN;
   const tempRaw = parameter?.T2M;
   if (!ghiRaw || !tempRaw) return null;
   const ghi = MONTH_KEYS.map((k) => ghiRaw[k]);
   const temp = MONTH_KEYS.map((k) => tempRaw[k]);
   const valid =
-    ghi.every((v) => typeof v === "number" && v >= 1 && v <= 9) &&
-    temp.every((v) => typeof v === "number" && v >= 5 && v <= 40);
+    ghi.every((v) => typeof v === "number" && v >= 1 && v <= 9) && temp.every((v) => typeof v === "number" && v >= 5 && v <= 40);
   return valid ? { ghi: ghi.map(round2), temp: temp.map(round2) } : null;
 }
 
@@ -86,7 +84,8 @@ async function readCache(key: string) {
     const db = await getDb();
     const rows = await db.select().from(irradianceCache).where(eq(irradianceCache.key, key)).limit(1);
     const row = rows[0];
-    if (row) return { ghi: JSON.parse(row.ghiJson) as number[], temp: JSON.parse(row.tempJson) as number[], fetchedAt: row.fetchedAt };
+    if (row)
+      return { ghi: JSON.parse(row.ghiJson) as number[], temp: JSON.parse(row.tempJson) as number[], fetchedAt: row.fetchedAt };
   } catch {
     // Database tidak tersedia — pakai cache memori.
   }
@@ -120,7 +119,16 @@ export async function getIrradiance(lat: number, lon: number, fetcher = fetchNas
   const { key, lat: rLat, lon: rLon } = cacheKey(lat, lon);
   const cached = await readCache(key);
   if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
-    return { source: "nasa-power", lat: rLat, lon: rLon, ghi: cached.ghi, temp: cached.temp, city: null, fetchedAt: cached.fetchedAt, cached: true };
+    return {
+      source: "nasa-power",
+      lat: rLat,
+      lon: rLon,
+      ghi: cached.ghi,
+      temp: cached.temp,
+      city: null,
+      fetchedAt: cached.fetchedAt,
+      cached: true,
+    };
   }
   if (nasaPowerEnabled()) {
     try {
@@ -136,7 +144,16 @@ export async function getIrradiance(lat: number, lon: number, fetcher = fetchNas
   }
   if (cached) {
     // Cache kedaluwarsa tetap lebih baik daripada estimasi regional.
-    return { source: "nasa-power", lat: rLat, lon: rLon, ghi: cached.ghi, temp: cached.temp, city: null, fetchedAt: cached.fetchedAt, cached: true };
+    return {
+      source: "nasa-power",
+      lat: rLat,
+      lon: rLon,
+      ghi: cached.ghi,
+      temp: cached.temp,
+      city: null,
+      fetchedAt: cached.fetchedAt,
+      cached: true,
+    };
   }
   return datasetFallback(lat, lon);
 }

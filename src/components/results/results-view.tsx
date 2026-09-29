@@ -13,13 +13,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
 import { CashflowChart, SensitivityTornado, SizingCharts } from "./charts/finance-charts";
 import { DailyProfileChart, MonthlyEnergyCharts } from "./charts/energy-charts";
-import {
-  AssumptionsList,
-  CashflowTable,
-  ComparisonTable,
-  LoanCard,
-  SizingOptionsList,
-} from "./detail-sections";
+import { AssumptionsList, CashflowTable, ComparisonTable, LoanCard, SizingOptionsList } from "./detail-sections";
 import { SectionNav } from "./section-nav";
 import { ShareDialog } from "./share-dialog";
 import {
@@ -45,7 +39,17 @@ const SECTIONS = [
   { id: "asumsi", label: "Asumsi" },
 ];
 
-function Section({ id, title, description, children }: { id: string; title: string; description?: string; children: React.ReactNode }) {
+function Section({
+  id,
+  title,
+  description,
+  children,
+}: {
+  id: string;
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+}) {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-32">
       <div className="mb-4">
@@ -90,7 +94,11 @@ function formatDateId(time: number): string {
 const noopSubscribe = () => () => {};
 /** Tanggal hari ini (kosong saat render server agar tidak terjadi hydration mismatch). */
 function useToday(): string {
-  return useSyncExternalStore(noopSubscribe, () => formatDateId(Date.now()), () => "");
+  return useSyncExternalStore(
+    noopSubscribe,
+    () => formatDateId(Date.now()),
+    () => "",
+  );
 }
 
 export interface ReportMeta {
@@ -154,7 +162,8 @@ export function ResultsView({
       {report ? (
         <div className="no-print mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 text-sm ring-1 ring-slate-200">
           <p className="text-slate-600">
-            <span className="font-bold text-slate-900">{report.title ?? "Laporan tersimpan"}</span> · dibuat {dateLabel} · dilihat {report.viewCount}×
+            <span className="font-bold text-slate-900">{report.title ?? "Laporan tersimpan"}</span> · dibuat {dateLabel} · dilihat{" "}
+            {report.viewCount}×
           </p>
           <Button size="sm" onClick={copyToCalculator}>
             <Copy className="h-4 w-4" aria-hidden /> Ubah di kalkulator saya
@@ -195,7 +204,11 @@ export function ResultsView({
       </div>
 
       <div className="mt-6 flex flex-col gap-12">
-        <Section id="ringkasan" title="Ringkasan" description={`Sistem yang direkomendasikan dan dampaknya pada tagihan listrik Anda di ${result.input.location.name}.`}>
+        <Section
+          id="ringkasan"
+          title="Ringkasan"
+          description={`Sistem yang direkomendasikan dan dampaknya pada tagihan listrik Anda di ${result.input.location.name}.`}
+        >
           <WarningsList result={result} />
           <GreenNeedsCard result={result} />
           <div className="grid gap-4 lg:grid-cols-2">
@@ -217,7 +230,11 @@ export function ResultsView({
           <DailyProfileChart result={result} />
         </Section>
 
-        <Section id="keuangan" title="Analisis keuangan" description={`Arus kas selama ${lifetime} tahun dengan kenaikan tarif, degradasi panel, perawatan, dan penggantian komponen.`}>
+        <Section
+          id="keuangan"
+          title="Analisis keuangan"
+          description={`Arus kas selama ${lifetime} tahun dengan kenaikan tarif, degradasi panel, perawatan, dan penggantian komponen.`}
+        >
           <FinanceStats result={result} />
           <CashflowChart result={result} />
           <LoanCard result={result} />
@@ -230,14 +247,24 @@ export function ResultsView({
           description="Karena surplus tidak dikompensasi, sistem yang lebih besar tidak selalu lebih menguntungkan. Bandingkan beberapa ukuran berikut."
         >
           <SizingCharts curve={result.sizing.curve} selectedKwp={result.system.kwp} />
-          <SizingOptionsList options={result.sizing.options} currentKwp={result.system.kwp} onApply={editable ? applySize : undefined} />
+          <SizingOptionsList
+            options={result.sizing.options}
+            currentKwp={result.system.kwp}
+            onApply={editable ? applySize : undefined}
+          />
         </Section>
 
-        <Section id="bandingkan" title="Bandingkan jenis sistem & risiko" description="Perbandingan on-grid, hybrid, dan off-grid untuk pemakaian Anda, serta seberapa sensitif balik modal terhadap perubahan asumsi.">
+        <Section
+          id="bandingkan"
+          title="Bandingkan jenis sistem & risiko"
+          description="Perbandingan on-grid, hybrid, dan off-grid untuk pemakaian Anda, serta seberapa sensitif balik modal terhadap perubahan asumsi."
+        >
           <ComparisonTable extras={extras} currentType={result.system.type} onSwitch={editable ? switchType : undefined} />
           <div className="rounded-2xl border border-slate-200/80 bg-white p-5">
             <h3 className="text-base font-bold text-slate-900">Analisis sensitivitas balik modal</h3>
-            <p className="mb-4 mt-0.5 text-[13px] text-slate-500">Bagaimana lama balik modal berubah bila satu asumsi berbeda dari perkiraan.</p>
+            <p className="mb-4 mt-0.5 text-[13px] text-slate-500">
+              Bagaimana lama balik modal berubah bila satu asumsi berbeda dari perkiraan.
+            </p>
             {extras ? (
               <SensitivityTornado items={extras.sensitivity} basePayback={ev.metrics.paybackYears} lifetime={lifetime} />
             ) : (
@@ -250,12 +277,16 @@ export function ResultsView({
           <EnvironmentCard result={result} />
         </Section>
 
-        <Section id="asumsi" title="Asumsi & metodologi" description="Semua angka di atas dihitung dari asumsi berikut. Ubah di kalkulator bila Anda memiliki data yang lebih akurat.">
+        <Section
+          id="asumsi"
+          title="Asumsi & metodologi"
+          description="Semua angka di atas dihitung dari asumsi berikut. Ubah di kalkulator bila Anda memiliki data yang lebih akurat."
+        >
           <AssumptionsList result={result} />
           <div className="rounded-2xl bg-amber-50 p-5 text-[13px] leading-relaxed text-amber-950 ring-1 ring-amber-200">
-            <strong>Disclaimer:</strong> Hasil ini adalah estimasi berbasis model dan asumsi umum, bukan penawaran harga maupun jaminan
-            kinerja. Produksi aktual dipengaruhi cuaca, bayangan, kualitas instalasi, dan perawatan. Lakukan survei lokasi dan minta
-            penawaran resmi dari installer bersertifikat, serta ikuti ketentuan PLN dan regulasi yang berlaku.{" "}
+            <strong>Disclaimer:</strong> Hasil ini adalah estimasi berbasis model dan asumsi umum, bukan penawaran harga maupun
+            jaminan kinerja. Produksi aktual dipengaruhi cuaca, bayangan, kualitas instalasi, dan perawatan. Lakukan survei lokasi
+            dan minta penawaran resmi dari installer bersertifikat, serta ikuti ketentuan PLN dan regulasi yang berlaku.{" "}
             <Link href="/metodologi" className="font-semibold underline underline-offset-2">
               Baca metodologi lengkap
             </Link>
@@ -270,11 +301,17 @@ export function ResultsView({
             </h2>
             <ul className="mt-3 grid gap-2 sm:grid-cols-2">
               {history.map((h) => (
-                <li key={h.id} className="flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 ring-1 ring-slate-200">
+                <li
+                  key={h.id}
+                  className="flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 ring-1 ring-slate-200"
+                >
                   <Link href={`/hasil/${h.id}`} className="min-w-0 hover:underline">
-                    <span className="block truncate text-sm font-semibold text-slate-900">{h.title ?? h.summary.locationName}</span>
+                    <span className="block truncate text-sm font-semibold text-slate-900">
+                      {h.title ?? h.summary.locationName}
+                    </span>
                     <span className="block text-xs text-slate-500">
-                      {formatKwp(h.summary.kwp)} · {formatRupiahCompact(h.summary.capex)} · BM {formatYears(h.summary.paybackYears)}
+                      {formatKwp(h.summary.kwp)} · {formatRupiahCompact(h.summary.capex)} · BM{" "}
+                      {formatYears(h.summary.paybackYears)}
                     </span>
                   </Link>
                   <Button variant="ghost" size="icon" aria-label="Hapus dari riwayat" onClick={() => removeHistory(h.id)}>

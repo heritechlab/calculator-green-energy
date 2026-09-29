@@ -38,7 +38,9 @@ export function Accordion({
               />
             </AccordionPrimitive.Trigger>
           </AccordionPrimitive.Header>
-          <AccordionPrimitive.Content className="border-t border-slate-100 px-4 pt-4 pb-5">{item.content}</AccordionPrimitive.Content>
+          <AccordionPrimitive.Content className="border-t border-slate-100 px-4 pt-4 pb-5">
+            {item.content}
+          </AccordionPrimitive.Content>
         </AccordionPrimitive.Item>
       ))}
     </AccordionPrimitive.Root>

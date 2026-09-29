@@ -47,7 +47,13 @@ export function ShareDialog({ result, trigger }: { result: CalculationResult; tr
       if (!res.ok) throw new Error(json?.error?.message ?? "Gagal menyimpan");
       const url = `${window.location.origin}/hasil/${json.id}`;
       setSaved({ url, id: json.id });
-      addHistory({ id: json.id, title: title.trim() || null, url, createdAt: json.createdAt ?? Date.now(), summary: json.summary as CalculationSummary });
+      addHistory({
+        id: json.id,
+        title: title.trim() || null,
+        url,
+        createdAt: json.createdAt ?? Date.now(),
+        summary: json.summary as CalculationSummary,
+      });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Gagal menyimpan");
     } finally {
@@ -73,7 +79,13 @@ export function ShareDialog({ result, trigger }: { result: CalculationResult; tr
       {!saved ? (
         <div className="flex flex-col gap-4">
           <Field label="Judul (opsional)" htmlFor="share-title" hint="Contoh: Rumah Bekasi, Ruko Jl. Sudirman.">
-            <TextInput id="share-title" value={title} maxLength={80} onChange={(e) => setTitle(e.target.value)} placeholder="Nama lokasi atau proyek" />
+            <TextInput
+              id="share-title"
+              value={title}
+              maxLength={80}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Nama lokasi atau proyek"
+            />
           </Field>
           {error ? <p className="rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p> : null}
           <Button size="lg" onClick={save} disabled={saving}>
@@ -90,7 +102,13 @@ export function ShareDialog({ result, trigger }: { result: CalculationResult; tr
             <Check className="h-4 w-4" aria-hidden /> Tautan siap dibagikan
           </p>
           <div className="flex gap-2">
-            <TextInput readOnly value={saved.url} aria-label="Tautan hasil" onFocus={(e) => e.currentTarget.select()} className="text-sm" />
+            <TextInput
+              readOnly
+              value={saved.url}
+              aria-label="Tautan hasil"
+              onFocus={(e) => e.currentTarget.select()}
+              className="text-sm"
+            />
             <Button
               variant="outline"
               size="icon"
@@ -107,7 +125,11 @@ export function ShareDialog({ result, trigger }: { result: CalculationResult; tr
           </div>
           <div className="grid gap-2 sm:grid-cols-2">
             <Button asChild variant="secondary">
-              <a href={`https://wa.me/?text=${encodeURIComponent(shareText(result, saved.url))}`} target="_blank" rel="noopener noreferrer">
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(shareText(result, saved.url))}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <MessageCircle className="h-4 w-4" aria-hidden /> Kirim via WhatsApp
               </a>
             </Button>
@@ -120,7 +142,11 @@ export function ShareDialog({ result, trigger }: { result: CalculationResult; tr
           {typeof navigator !== "undefined" && "share" in navigator ? (
             <Button
               variant="ghost"
-              onClick={() => navigator.share({ title: "Hasil perhitungan PLTS", text: shareText(result, saved.url), url: saved.url }).catch(() => {})}
+              onClick={() =>
+                navigator
+                  .share({ title: "Hasil perhitungan PLTS", text: shareText(result, saved.url), url: saved.url })
+                  .catch(() => {})
+              }
             >
               <Share2 className="h-4 w-4" aria-hidden /> Bagikan lewat aplikasi lain
             </Button>

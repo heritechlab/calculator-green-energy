@@ -37,7 +37,12 @@ export function LiveSummary({
   }
   const ev = result.evaluation;
   return (
-    <div className={cn("overflow-hidden rounded-3xl border border-emerald-100 bg-white shadow-soft transition-opacity", stale && "opacity-70")}>
+    <div
+      className={cn(
+        "overflow-hidden rounded-3xl border border-emerald-100 bg-white shadow-soft transition-opacity",
+        stale && "opacity-70",
+      )}
+    >
       <div className="bg-gradient-to-br from-emerald-600 to-emerald-800 p-5 text-white">
         <p className="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-emerald-100 uppercase">
           Estimasi sementara {stale ? <Loader2 className="h-3 w-3 animate-spin" aria-label="Menghitung" /> : null}
@@ -46,7 +51,9 @@ export function LiveSummary({
         <p className="text-3xl font-extrabold tracking-tight">{formatKwp(result.system.kwp)}</p>
         <p className="mt-1 text-xs text-emerald-100">
           {result.system.panelCount} panel × {result.system.panelWp} Wp
-          {result.system.batteryKwh > 0 ? ` · baterai ${result.system.batteryKwh.toLocaleString("id-ID", { maximumFractionDigits: 1 })} kWh` : ""}
+          {result.system.batteryKwh > 0
+            ? ` · baterai ${result.system.batteryKwh.toLocaleString("id-ID", { maximumFractionDigits: 1 })} kWh`
+            : ""}
         </p>
       </div>
       <div className="p-5">
@@ -107,7 +114,10 @@ export function MobileWizardBar({
             <span className="font-semibold text-slate-800">{formatRupiahCompact(ev.capex)}</span>
             <span className="text-slate-400"> · </span>
             <span className="font-semibold text-slate-800">
-              BM {ev.metrics.paybackYears === null ? "–" : `${ev.metrics.paybackYears.toLocaleString("id-ID", { maximumFractionDigits: 1 })} th`}
+              BM{" "}
+              {ev.metrics.paybackYears === null
+                ? "–"
+                : `${ev.metrics.paybackYears.toLocaleString("id-ID", { maximumFractionDigits: 1 })} th`}
             </span>
           </span>
           <ChevronUp className={cn("h-4 w-4 shrink-0 text-slate-400 transition-transform", !open && "rotate-180")} aria-hidden />
@@ -136,7 +146,13 @@ export function MobileWizardBar({
         </dl>
       ) : null}
       <div className="flex gap-2 px-4 py-2.5">
-        <Button variant="outline" onClick={onBack} disabled={!canBack} className="w-28" aria-label="Kembali ke langkah sebelumnya">
+        <Button
+          variant="outline"
+          onClick={onBack}
+          disabled={!canBack}
+          className="w-28"
+          aria-label="Kembali ke langkah sebelumnya"
+        >
           <ArrowLeft className="h-4 w-4" aria-hidden /> Kembali
         </Button>
         <Button onClick={onNext} className="flex-1">

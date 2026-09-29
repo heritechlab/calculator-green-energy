@@ -10,7 +10,15 @@ const STYLES: Record<FeasibilityLevel, { className: string; Icon: typeof CheckCi
 };
 
 /** Status kelayakan: selalu ikon + label (tidak hanya warna). */
-export function FeasibilityBadge({ level, className, onDark }: { level: FeasibilityLevel; className?: string; onDark?: boolean }) {
+export function FeasibilityBadge({
+  level,
+  className,
+  onDark,
+}: {
+  level: FeasibilityLevel;
+  className?: string;
+  onDark?: boolean;
+}) {
   const { className: tone, Icon } = STYLES[level];
   return (
     <span
@@ -20,7 +28,14 @@ export function FeasibilityBadge({ level, className, onDark }: { level: Feasibil
         className,
       )}
     >
-      <Icon className={cn("h-4 w-4", onDark && (level === "tidak-layak" ? "text-rose-600" : level === "kurang-layak" ? "text-amber-600" : "text-emerald-600"))} aria-hidden />
+      <Icon
+        className={cn(
+          "h-4 w-4",
+          onDark &&
+            (level === "tidak-layak" ? "text-rose-600" : level === "kurang-layak" ? "text-amber-600" : "text-emerald-600"),
+        )}
+        aria-hidden
+      />
       {FEASIBILITY_LABELS[level]}
     </span>
   );

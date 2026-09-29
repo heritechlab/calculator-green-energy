@@ -18,14 +18,29 @@ import type { CalculationResult } from "@/lib/engine";
 import { MONTH_LABELS, MONTH_NAMES } from "@/lib/engine/constants";
 import { formatKwh, formatNumber } from "@/lib/format";
 import { NativeSelect } from "@/components/ui/select";
-import { CHROME, ChartFrame, SERIES, TooltipCard, axisTick, compactNumber, niceScale, useNarrow, usePrefersReducedMotion, type LegendItem } from "./chart-kit";
+import {
+  CHROME,
+  ChartFrame,
+  SERIES,
+  TooltipCard,
+  axisTick,
+  compactNumber,
+  niceScale,
+  useNarrow,
+  usePrefersReducedMotion,
+  type LegendItem,
+} from "./chart-kit";
 
 const HEIGHT = 260;
 const BAR_GAP_STROKE = { stroke: CHROME.surface, strokeWidth: 2 } as const;
 
 type Row = Record<string, number | string>;
 
-function kwhTooltip(title: (label: string | number | undefined) => string, labels: Record<string, string>, footer?: (p: Row) => string) {
+function kwhTooltip(
+  title: (label: string | number | undefined) => string,
+  labels: Record<string, string>,
+  footer?: (p: Row) => string,
+) {
   return function Content({ active, payload, label }: TooltipContentProps) {
     if (!active || !payload?.length) return null;
     const rows = payload
@@ -81,7 +96,12 @@ export function MonthlyEnergyCharts({ result }: { result: CalculationResult }) {
     { label: offgrid ? "Surplus terbuang" : "Surplus ke PLN (tanpa kompensasi)", color: SERIES.surplus, kind: "rect" },
   ];
 
-  const sourceKeys = ["direct", ...(hasBattery ? ["fromBattery"] : []), ...(offgrid ? [] : ["gridImport"]), ...(hasUnmet ? ["unmet"] : [])];
+  const sourceKeys = [
+    "direct",
+    ...(hasBattery ? ["fromBattery"] : []),
+    ...(offgrid ? [] : ["gridImport"]),
+    ...(hasUnmet ? ["unmet"] : []),
+  ];
   const useKeys = ["direct", ...(hasBattery ? ["charge"] : []), "exported"];
   const colors: Record<string, string> = {
     direct: SERIES.solar,
@@ -123,8 +143,24 @@ export function MonthlyEnergyCharts({ result }: { result: CalculationResult }) {
         <ResponsiveContainer width="100%" height={HEIGHT} initialDimension={{ width: 520, height: HEIGHT }}>
           <BarChart data={data} margin={{ top: 8, right: 4, bottom: 0, left: 0 }} barCategoryGap="22%">
             <CartesianGrid vertical={false} stroke={CHROME.grid} />
-            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={{ stroke: CHROME.axis }} interval={0} fontSize={11} tickFormatter={monthTick} />
-            <YAxis tick={axisTick} tickLine={false} axisLine={false} width={44} tickFormatter={compactNumber} domain={sourceScale.domain} ticks={sourceScale.ticks} />
+            <XAxis
+              dataKey="month"
+              tick={axisTick}
+              tickLine={false}
+              axisLine={{ stroke: CHROME.axis }}
+              interval={0}
+              fontSize={11}
+              tickFormatter={monthTick}
+            />
+            <YAxis
+              tick={axisTick}
+              tickLine={false}
+              axisLine={false}
+              width={44}
+              tickFormatter={compactNumber}
+              domain={sourceScale.domain}
+              ticks={sourceScale.ticks}
+            />
             <Tooltip
               cursor={{ fill: "rgba(15,23,42,0.04)" }}
               content={kwhTooltip(monthTitle, labels, (p) => `Total ${formatKwh(Number(p.consumption))}`)}
@@ -164,8 +200,24 @@ export function MonthlyEnergyCharts({ result }: { result: CalculationResult }) {
         <ResponsiveContainer width="100%" height={HEIGHT} initialDimension={{ width: 520, height: HEIGHT }}>
           <BarChart data={data} margin={{ top: 8, right: 4, bottom: 0, left: 0 }} barCategoryGap="22%">
             <CartesianGrid vertical={false} stroke={CHROME.grid} />
-            <XAxis dataKey="month" tick={axisTick} tickLine={false} axisLine={{ stroke: CHROME.axis }} interval={0} fontSize={11} tickFormatter={monthTick} />
-            <YAxis tick={axisTick} tickLine={false} axisLine={false} width={44} tickFormatter={compactNumber} domain={useScale.domain} ticks={useScale.ticks} />
+            <XAxis
+              dataKey="month"
+              tick={axisTick}
+              tickLine={false}
+              axisLine={{ stroke: CHROME.axis }}
+              interval={0}
+              fontSize={11}
+              tickFormatter={monthTick}
+            />
+            <YAxis
+              tick={axisTick}
+              tickLine={false}
+              axisLine={false}
+              width={44}
+              tickFormatter={compactNumber}
+              domain={useScale.domain}
+              ticks={useScale.ticks}
+            />
             <Tooltip
               cursor={{ fill: "rgba(15,23,42,0.04)" }}
               content={kwhTooltip(monthTitle, labels, (p) => `Produksi ${formatKwh(Number(p.production))}`)}
@@ -221,8 +273,18 @@ export function DailyProfileChart({ result }: { result: CalculationResult }) {
     ...(offgrid ? [] : [{ label: "Dari PLN", color: SERIES.grid, kind: "rect" as const }]),
     ...(hasUnmet ? [{ label: "Tidak terpenuhi", color: "#64748b", kind: "rect" as const }] : []),
   ];
-  const areaKeys = ["direct", ...(hasBattery ? ["discharge"] : []), ...(offgrid ? [] : ["gridImport"]), ...(hasUnmet ? ["unmet"] : [])];
-  const colors: Record<string, string> = { direct: SERIES.solar, discharge: SERIES.battery, gridImport: SERIES.grid, unmet: "#64748b" };
+  const areaKeys = [
+    "direct",
+    ...(hasBattery ? ["discharge"] : []),
+    ...(offgrid ? [] : ["gridImport"]),
+    ...(hasUnmet ? ["unmet"] : []),
+  ];
+  const colors: Record<string, string> = {
+    direct: SERIES.solar,
+    discharge: SERIES.battery,
+    gridImport: SERIES.grid,
+    unmet: "#64748b",
+  };
   const labels: Record<string, string> = {
     direct: "langsung dari PLTS",
     discharge: "dari baterai",
@@ -251,7 +313,11 @@ export function DailyProfileChart({ result }: { result: CalculationResult }) {
       aside={
         <label className="flex items-center gap-2 text-[13px] font-semibold text-slate-600">
           <span className="sr-only sm:not-sr-only">Bulan</span>
-          <NativeSelect value={month} onChange={(e) => setMonth(Number(e.target.value))} className="h-9 w-44 rounded-lg py-0 text-sm">
+          <NativeSelect
+            value={month}
+            onChange={(e) => setMonth(Number(e.target.value))}
+            className="h-9 w-44 rounded-lg py-0 text-sm"
+          >
             <option value={-1}>Rata-rata tahunan</option>
             {MONTH_NAMES.map((m, i) => (
               <option key={m} value={i}>
@@ -263,7 +329,14 @@ export function DailyProfileChart({ result }: { result: CalculationResult }) {
       }
       table={{
         caption: "Profil energi per jam (kWh)",
-        columns: ["Jam", "Pemakaian", "Produksi PLTS", "Dari PLTS", ...(hasBattery ? ["Dari baterai"] : []), ...(offgrid ? [] : ["Dari PLN"])],
+        columns: [
+          "Jam",
+          "Pemakaian",
+          "Produksi PLTS",
+          "Dari PLTS",
+          ...(hasBattery ? ["Dari baterai"] : []),
+          ...(offgrid ? [] : ["Dari PLN"]),
+        ],
         rows: data.map((d) => [
           d.hour,
           formatKwh(d.load),
@@ -286,7 +359,15 @@ export function DailyProfileChart({ result }: { result: CalculationResult }) {
             fontSize={11}
             tickFormatter={(h: string) => (narrow ? h.slice(0, 2) : h)}
           />
-          <YAxis tick={axisTick} tickLine={false} axisLine={false} width={44} tickFormatter={(v: number) => formatNumber(v, v < 10 ? 1 : 0)} domain={scale.domain} ticks={scale.ticks} />
+          <YAxis
+            tick={axisTick}
+            tickLine={false}
+            axisLine={false}
+            width={44}
+            tickFormatter={(v: number) => formatNumber(v, v < 10 ? 1 : 0)}
+            domain={scale.domain}
+            ticks={scale.ticks}
+          />
           <Tooltip content={Content} cursor={{ stroke: CHROME.baseline, strokeWidth: 1 }} />
           {areaKeys.map((k) => (
             <Area
@@ -301,7 +382,15 @@ export function DailyProfileChart({ result }: { result: CalculationResult }) {
               isAnimationActive={!reduced}
             />
           ))}
-          <Line type="monotone" dataKey="pv" stroke={SERIES.pv} strokeWidth={2.5} dot={false} activeDot={{ r: 5, stroke: CHROME.surface, strokeWidth: 2 }} isAnimationActive={!reduced} />
+          <Line
+            type="monotone"
+            dataKey="pv"
+            stroke={SERIES.pv}
+            strokeWidth={2.5}
+            dot={false}
+            activeDot={{ r: 5, stroke: CHROME.surface, strokeWidth: 2 }}
+            isAnimationActive={!reduced}
+          />
         </ComposedChart>
       </ResponsiveContainer>
     </ChartFrame>
