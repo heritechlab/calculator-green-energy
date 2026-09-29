@@ -197,7 +197,7 @@ export function createDefaultInput(cityId: string = DEFAULT_CITY_ID): Calculator
   };
 }
 
-type DeepPartial<T> = T extends Array<infer _U> ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;
+type DeepPartial<T> = T extends unknown[] ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;
 export type PartialCalculatorInput = DeepPartial<CalculatorInput>;
 
 function isPlainObject(v: unknown): v is Record<string, unknown> {

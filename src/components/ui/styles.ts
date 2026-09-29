@@ -1,0 +1,2 @@
+export const inputClass =
+  "h-12 w-full min-w-0 rounded-xl border border-slate-200 bg-white px-3.5 text-base text-slate-900 shadow-sm shadow-slate-900/[0.03] transition-colors placeholder:text-slate-400 hover:border-slate-300 focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/15 disabled:bg-slate-50 disabled:text-slate-500 aria-[invalid=true]:border-rose-400 aria-[invalid=true]:focus:ring-rose-500/15";

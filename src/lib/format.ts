@@ -24,10 +24,11 @@ export function formatRupiahCompact(value: number): string {
   if (!Number.isFinite(value)) return "–";
   const sign = value < 0 ? "-" : "";
   const v = Math.abs(value);
-  if (v >= 1e12) return `${sign}Rp${formatDecimal(v / 1e12, 2)} T`;
-  if (v >= 1e9) return `${sign}Rp${formatDecimal(v / 1e9, 2)} M`;
-  if (v >= 1e6) return `${sign}Rp${formatDecimal(v / 1e6, v >= 1e8 ? 0 : 1)} jt`;
-  if (v >= 1e3) return `${sign}Rp${formatDecimal(v / 1e3, 0)} rb`;
+  // Ambang memperhitungkan pembulatan (mis. 999.800 → "Rp1 jt", bukan "Rp1.000 rb").
+  if (v >= 999.995e9) return `${sign}Rp${formatDecimal(v / 1e12, 2)} T`;
+  if (v >= 999.5e6) return `${sign}Rp${formatDecimal(v / 1e9, 2)} M`;
+  if (v >= 999_500) return `${sign}Rp${formatDecimal(v / 1e6, v >= 99.95e6 ? 0 : 1)} jt`;
+  if (v >= 999.5) return `${sign}Rp${formatDecimal(v / 1e3, 0)} rb`;
   return `${sign}Rp${Math.round(v)}`;
 }
 
@@ -68,6 +69,11 @@ export function formatYears(years: number | null, fallback = "Tidak balik modal"
   if (whole === 0) return `${months} bulan`;
   if (months === 0) return `${whole} tahun`;
   return `${whole} tahun ${months} bulan`;
+}
+
+/** Durasi ringkas: "9 th 5 bln". */
+export function formatYearsCompact(years: number | null, fallback = "–"): string {
+  return formatYears(years, fallback).replace(" tahun", " th").replace(" bulan", " bln");
 }
 
 /** Versi pendek: "7,1 thn". */

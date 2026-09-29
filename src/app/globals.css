@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    "Plus Jakarta Sans Variable", "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Warna brand (dibangun di atas palet emerald Tailwind) */
+  --color-forest: #064e3b;
+  --color-forest-deep: #022c22;
+  --color-mint: #ecfdf5;
+  --color-leaf: #84cc16;
+  --color-sun: #f59e0b;
+
+  /* Warna seri grafik — tervalidasi (kontras ≥ 3:1 terhadap putih, ΔE CVD berdekatan ≥ 8) */
+  --color-series-solar: #059669;
+  --color-series-battery: #d946ef;
+  --color-series-grid: #0284c7;
+  --color-series-pv: #d97706;
+  --color-series-surplus: #ea580c;
+
+  --shadow-soft: 0 1px 2px rgb(6 78 59 / 0.05), 0 12px 32px -12px rgb(6 78 59 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(6 78 59 / 0.06), 0 20px 48px -16px rgb(6 78 59 / 0.28);
+
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+}
+
+:root {
+  color-scheme: light;
+  --background: #f5faf7;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgb(16 185 129 / 0.25);
+}
+
+:focus-visible {
+  outline: 2px solid #059669;
+  outline-offset: 2px;
+}
+
+/* Angka dalam kolom yang perlu sejajar */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scrollbar horizontal tipis untuk tabel lebar & chip */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Pola grid halus untuk latar hero */
+.bg-grid-faint {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Recharts: hilangkan outline fokus bawaan pada permukaan SVG saat diklik */
+.recharts-wrapper:focus,
+.recharts-surface:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-avoid-break {
+    break-inside: avoid;
+  }
+  .print-break-before {
+    break-before: page;
+  }
+  .recharts-wrapper,
+  .recharts-surface {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

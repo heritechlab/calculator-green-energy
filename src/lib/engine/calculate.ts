@@ -310,8 +310,8 @@ function buildAssumptions(ctx: EngineContext, ev: Evaluation): AssumptionItem[] 
   add("Lokasi & radiasi", "Bayangan", `${i.roof.shadingPct}%`);
   add("Lokasi & radiasi", "Performance ratio", formatPercent(ctx.pv.performanceRatio * 100, 1));
 
-  add("Tarif & konsumsi", "Golongan tarif", `${ctx.tariff.label} · ${formatNumber(ctx.va)} VA`);
-  add("Tarif & konsumsi", "Tarif dasar", `${formatRupiah(ctx.baseRate)}/kWh`);
+  add("Tarif & konsumsi", "Golongan tarif", `${ctx.tariff.code} · ${formatNumber(ctx.va)} VA`);
+  add("Tarif & konsumsi", "Tarif dasar", `Rp${formatNumber(ctx.baseRate, 2)}/kWh`);
   add("Tarif & konsumsi", "Pajak (PBJT + PPN)", formatPercent(ctx.taxFrac * 100, 1));
   add("Tarif & konsumsi", "Konsumsi tahunan", formatKwh(annualConsumption(ctx)));
   add("Tarif & konsumsi", "Pola pemakaian", `${getLoadProfile(i.consumption.profileId).label} (siang ${formatPercent(daytimeShare(ctx.profile) * 100)})`);
